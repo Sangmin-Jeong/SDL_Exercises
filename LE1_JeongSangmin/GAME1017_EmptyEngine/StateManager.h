@@ -12,7 +12,7 @@ private: // Private properties.
 	static std::vector<State*> s_states;
 
 private: // Private Methods.
-	StateManager() {}
+	StateManager() {} // or "= default;"
 
 public: // Public Methods.
 	static void Update();
