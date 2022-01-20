@@ -107,6 +107,12 @@ int Engine::Run()
 	return 0;
 }
 
+Engine& Engine::Instance()
+{
+	static Engine instance; // going to create one single instance in a global scope.
+	return instance;
+}
+
 void Engine::Clean()
 {
 	cout << "Cleaning engine..." << endl;
