@@ -93,6 +93,12 @@ void GameState::Update()
 		// pause the music track.
 		STMA::PushState(new PauseState());
 	}
+
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_X))
+	{
+		cout << "Changing to EndState" << endl;
+		STMA::ChangeState(new EndState());
+	}
 	// Pause 'X' key and changeState to new End State.
 	// Parse 1 key and play first sfx.
 	// parse 2 key and play second sfx.
@@ -132,15 +138,18 @@ void EndState::Enter()
 
 void EndState::Update()
 {
-	if (Engine::Instance().KeyDown(SDL_SCANCODE_X))
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_R))
 	{
-		cout << "Changing to EndState" << endl;
-		STMA::ChangeState(new EndState());
+		cout << "Changing to TitleState" << endl;
+		STMA::ChangeState(new TitleState());
 	}
 }
 
 void EndState::Render()
 {
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 120, 50, 0, 255);
+	SDL_RenderClear(Engine::Instance().GetRenderer());
+	// This code below prevents SDL_RenderPresent from running twice in one frame.
 	State::Render();
 }
 
