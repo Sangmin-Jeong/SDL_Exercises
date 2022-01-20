@@ -3,6 +3,7 @@
 #define _STATES_H_
 #include "SoundManager.h"
 
+
 class State
 {
 protected: // Private but inherited.

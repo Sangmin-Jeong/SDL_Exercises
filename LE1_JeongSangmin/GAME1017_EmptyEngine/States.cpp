@@ -86,6 +86,8 @@ void GameState::Enter()
 	cout << "Entering GameState..." << endl;
 	// Load music sfx, add them to map.
 	// Load music track, add it to map, and play it.
+	SoundManager::Load("Assets/audio/coffee.mp3", "coffee", SOUND_MUSIC);
+	SoundManager::PlayMusic("coffee", -1, 0);
 }
 
 void GameState::Update()
@@ -94,6 +96,7 @@ void GameState::Update()
 	{
 		cout << "Changing to PauseState" << endl;
 		// pause the music track.
+		SoundManager::PauseMusic();
 		STMA::PushState(new PauseState());
 	}
 
@@ -102,12 +105,22 @@ void GameState::Update()
 		cout << "Changing to EndState" << endl;
 		STMA::ChangeState(new EndState());
 	}
-	// Pause 'X' key and changeState to new End State.
-	// Parse 1 key and play first sfx.
-	// parse 2 key and play second sfx.
 
-	// look at the Audio Manager in previous Engine
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_1))
+	{
+		cout << "Buff Sound" << endl;
+		SOMA::Load("Assets/audio/buff.wav", "buff", SOUND_SFX);
+		SOMA::PlaySound("buff", 0, -1);
+		SDL_Delay(500);
+	}
 
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_2))
+	{
+		cout << "Reload Sound" << endl;
+		SOMA::Load("Assets/audio/reload.wav", "reload", SOUND_SFX);
+		SOMA::PlaySound("reload", 0, -1);
+		SDL_Delay(500);
+	}
 }
 
 void GameState::Render()
@@ -124,12 +137,15 @@ void GameState::Render()
 void GameState::Exit()
 {
 	cout << "Exiting GameState..." << endl;
+	SoundManager::StopMusic(0);
+
 }
 
 void GameState::Resume()
 {
 	cout << "resuming GameState..." << endl;
 	// Resume music track.
+	SoundManager::ResumeMusic();
 }
 
 EndState::EndState() {}
