@@ -1,6 +1,7 @@
 #pragma once
 #ifndef _STATES_H_
 #define _STATES_H_
+#include "SoundManager.h"
 
 class State
 {
@@ -14,13 +15,14 @@ public: // Public Methods.
 	virtual void Exit() = 0;
 	virtual void Resume() {};
 
+private:
+	
 };
 
 class TitleState : public State
 {
 private:
 	// map for music track goes here.
-
 
 public:
 	TitleState();

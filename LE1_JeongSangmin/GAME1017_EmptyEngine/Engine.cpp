@@ -22,6 +22,32 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 				}
 				else return false; // Image init failed.
 				// Initialize mixer subsystem.
+
+				SoundManager::Init();
+				SoundManager::AllocateChannels(16);
+				SoundManager::SetAllVolume(32);
+
+				//if (Mix_Init(MIX_INIT_MP3) != 0)
+				//{
+				//	// Configure mixer.
+				//	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 2048);
+				//	Mix_AllocateChannels(16);
+				//	// Load SFX.
+				//	m_begin = Mix_LoadWAV("Assets/audio/begin.mp3");
+
+				//	// Load Music.
+				//	m_boss = Mix_LoadMUS("Assets/audio/boss.mp3");
+				//	m_horror = Mix_LoadMUS("Assets/audio/horror.wav");
+
+				//	// Allocates SFX to the map
+				//	m_mapSFX.emplace("begin", m_begin);
+
+				//	// Allocates Music to the map
+				//	m_mapMusic.emplace("boss", m_boss);
+				//	m_mapMusic.emplace("horror", m_horror);
+
+				//}
+				//else return false; // Mixer init failed.
 			}
 			else return false; // Renderer creation failed.
 		}
@@ -31,6 +57,7 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 	m_fps = (Uint32)round(1.0 / (double)FPS * 1000); // Converts FPS into milliseconds, e.g. 16.67
 	m_keystates = SDL_GetKeyboardState(nullptr);
 	STMA::ChangeState(new TitleState());
+	/*Mix_AllocateChannels(16);*/
 
 	cout << "Initialization successful!" << endl;
 	m_running = true;
@@ -122,8 +149,12 @@ void Engine::Clean()
 	STMA::Quit();
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
-	Mix_CloseAudio();
-	Mix_Quit();
+	//Mix_FreeChunk(m_begin);
+	//Mix_FreeMusic(m_boss);
+	//Mix_FreeMusic(m_horror);
+	//Mix_CloseAudio();
+	//Mix_Quit();
+	SoundManager::Quit();
 	IMG_Quit();
 	SDL_Quit();
 }

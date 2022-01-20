@@ -16,6 +16,8 @@ void TitleState::Enter()
 {
 	cout << "Entering TitleState..." << endl;
 	// Load music track, add it to map, and play it.
+	SoundManager::Load("Assets/audio/boss.mp3", "boss", SOUND_MUSIC);
+	SoundManager::PlayMusic("boss", -1, 0);
 }
 
 void TitleState::Update()
@@ -37,6 +39,7 @@ void TitleState::Render()
 void TitleState::Exit()
 {
 	cout << "Exiting TitleState..." << endl;
+	SoundManager::StopMusic(0);
 	// call Mix_FreeMusic on your music track
 
 }

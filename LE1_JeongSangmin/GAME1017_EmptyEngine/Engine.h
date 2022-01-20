@@ -8,6 +8,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
+#include "SoundManager.h"
 #define FPS 60
 #define WIDTH 1024
 #define HEIGHT 768
@@ -21,6 +22,17 @@ private: // private properties.
 	const Uint8* m_keystates;
 	SDL_Window* m_pWindow;
 	SDL_Renderer* m_pRenderer;
+
+	//// Sound effect objects
+	//Mix_Chunk* m_begin;
+
+	//// Music track objects.
+	//Mix_Music* m_horror;
+	//Mix_Music* m_boss;
+
+	//// Map of Mix_Chunk*
+	//map<string, Mix_Music*> m_mapMusic;
+	//map<string, Mix_Chunk*> m_mapSFX;
 
 private: // private method prototypes.
 	Engine() // A private constructor prevents external instantation.
