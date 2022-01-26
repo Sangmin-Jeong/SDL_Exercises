@@ -16,6 +16,9 @@ void TitleState::Enter()
 {
 	cout << "Entering TitleState..." << endl;
 	// Load music track, add it to map, and play it.
+	/*m_mus = Mix_LoadMUS("Assets/audio/boss.mp3");
+	m_mMus.emplace("boss", m_mus);*/
+	//Mix_PlayMusic(m_mMus["boss"], -1);
 	SoundManager::Load("Assets/audio/boss.mp3", "boss", SOUND_MUSIC);
 	SoundManager::PlayMusic("boss", -1, 0);
 }
@@ -86,6 +89,8 @@ void GameState::Enter()
 	cout << "Entering GameState..." << endl;
 	// Load music sfx, add them to map.
 	// Load music track, add it to map, and play it.
+	//m_sfx1 = Mix_LoadWAV("Assets/audio/buff.wav");
+	//m_mSfx.emplace("buff", m_sfx1);
 	SoundManager::Load("Assets/audio/coffee.mp3", "coffee", SOUND_MUSIC);
 	SoundManager::PlayMusic("coffee", -1, 0);
 }
@@ -111,6 +116,7 @@ void GameState::Update()
 		cout << "Buff Sound" << endl;
 		SOMA::Load("Assets/audio/buff.wav", "buff", SOUND_SFX);
 		SOMA::PlaySound("buff", 0, -1);
+		/*Mix_PlayChannel(-1, m_mSfx["buff"], 0);*/
 		SDL_Delay(500);
 	}
 

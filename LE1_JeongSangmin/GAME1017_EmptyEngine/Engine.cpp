@@ -32,19 +32,6 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 				//	// Configure mixer.
 				//	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 2048);
 				//	Mix_AllocateChannels(16);
-				//	// Load SFX.
-				//	m_begin = Mix_LoadWAV("Assets/audio/begin.mp3");
-
-				//	// Load Music.
-				//	m_boss = Mix_LoadMUS("Assets/audio/boss.mp3");
-				//	m_horror = Mix_LoadMUS("Assets/audio/horror.wav");
-
-				//	// Allocates SFX to the map
-				//	m_mapSFX.emplace("begin", m_begin);
-
-				//	// Allocates Music to the map
-				//	m_mapMusic.emplace("boss", m_boss);
-				//	m_mapMusic.emplace("horror", m_horror);
 
 				//}
 				//else return false; // Mixer init failed.
