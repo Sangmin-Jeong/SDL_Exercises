@@ -1,6 +1,7 @@
 #include "States.h"
 #include "StateManager.h"
 #include "Engine.h"
+#include "SoundManager.h"
 #include <iostream>
 using namespace std;
 
@@ -16,8 +17,8 @@ void TitleState::Enter()
 {
 	cout << "Entering TitleState..." << endl;
 	// Load music track, add it to map, and play it.
-	/*m_mus = Mix_LoadMUS("Assets/audio/boss.mp3");
-	m_mMus.emplace("boss", m_mus);*/
+	//m_mus = Mix_LoadMUS("Assets/audio/boss.mp3");
+	//m_mMus.emplace("boss", m_mus);
 	//Mix_PlayMusic(m_mMus["boss"], -1);
 	SoundManager::Load("Assets/audio/boss.mp3", "boss", SOUND_MUSIC);
 	SoundManager::PlayMusic("boss", -1, 0);

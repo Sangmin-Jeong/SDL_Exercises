@@ -53,9 +53,9 @@ class GameState : public State
 private:
 	// map for music track goes here.
 	// map for sfx goes here.
-	Mix_Chunk* m_sfx1;
-	Mix_Chunk* m_sfx2;
-	std::map<std::string, Mix_Chunk*> m_mSfx;
+	//Mix_Chunk* m_sfx1;
+	//Mix_Chunk* m_sfx2;
+	//std::map<std::string, Mix_Chunk*> m_mSfx;
 
 public:
 	GameState();
