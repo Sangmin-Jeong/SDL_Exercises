@@ -144,6 +144,15 @@ void GameState::Update()
 			cout << "Enemy object deleted (DOWN)\n";
 			break;
 		}
+		else if(GameState::Enemies()[i]->getHits() == 0)
+		{
+			delete s_enemies[i]; // Deallocates Missile through pointer.
+			s_enemies[i] = nullptr; // Ensures no dangling pointer.
+			s_enemies.erase(s_enemies.begin() + i); // Erase element and resize array.
+			s_enemies.shrink_to_fit();
+			cout << "Enemy's life is 0\n";
+			break;
+		}
 	}
 		
 
@@ -188,23 +197,26 @@ void GameState::Update()
 			break;
 		}
 	}
+
+	// Bullet hits Enemy
+	for (unsigned i = 0; i < s_bullets.size(); i++)
+	{
+		for (unsigned j = 0; j < s_enemies.size(); j++)
+		{
+			if (CollisionManager::PointAABBCheck(GameState::Bullets()[i]->getCurrentPoint(), GameState::Enemies()[j]->getCurrentDst()))
+			{
+				delete s_bullets[i];
+				s_bullets[i] = nullptr;
+				s_bullets.erase(s_bullets.begin() + i);
+				s_bullets.shrink_to_fit();
+				cout << "Bullet hits Enemy\n";
+				GameState::Enemies()[j]->m_tint -= 32;
+				GameState::Enemies()[j]->setHits(GameState::Enemies()[j]->getHits() - 1);
+				break;
+			}
+		}
 		
-
-	// Cleanup bullets and enemies that go off screen.
-
-		// for all bullets
-			// if bullet goes off screen (four bounds checks)
-				// delete s_bullets[i]
-				// set s_bullets[i] to nullptr
-	/*m_turrets[i] = nullptr;*/
-	
-		// for all enemies, similar to above
-
-	// Check for collisions with bullets and enemies.
-	
-		// for all bullets
-			// for all enemies
-				// check collision
+	}
 }
 
 void GameState::Render()

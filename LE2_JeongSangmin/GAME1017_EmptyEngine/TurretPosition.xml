@@ -1,7 +1,7 @@
 <Root>
-    <Turret TurretCount="0" position.x="889" position.y="1328"/>
-    <Turret TurretCount="1" position.x="1051" position.y="1474"/>
-    <Turret TurretCount="2" position.x="718" position.y="665"/>
-    <Turret TurretCount="3" position.x="859" position.y="500"/>
-    <Turret TurretCount="4" position.x="509" position.y="425"/>
+    <Turret TurretCount="0" position.x="626" position.y="532"/>
+    <Turret TurretCount="1" position.x="458" position.y="420"/>
+    <Turret TurretCount="2" position.x="411" position.y="289"/>
+    <Turret TurretCount="3" position.x="921" position.y="429"/>
+    <Turret TurretCount="4" position.x="238" position.y="402"/>
 </Root>

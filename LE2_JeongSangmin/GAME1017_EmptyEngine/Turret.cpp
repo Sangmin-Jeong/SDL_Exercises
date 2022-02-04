@@ -1,4 +1,6 @@
 #include "Turret.h"
+
+#include "CollisionManager.h"
 #include "States.h"
 #include "Enemy.h"
 #include "Engine.h"
@@ -51,6 +53,19 @@ void Turret::Update()
 			// double dx = MAMA::SetDeltaX(MAMA::Deg2Rad(m_angle-90), 6.0);
 			// double dy = MAMA::SetDeltaY(MAMA::Deg2Rad(m_angle-90), 6.0);
 			GameState::Bullets().push_back(new Bullet({(float)(tPos.x-2), (float)(tPos.y+2), (float)4, (float)4}, dx, dy));
+			//for (unsigned i = 1; i < GameState::Bullets().size(); i++)
+			//{
+			//	cout << MAMA::Distance(GameState::Bullets()[i]->getCurrentPoint().x, cPos.x, GameState::Bullets()[i]->getCurrentPoint().y, cPos.y) << endl;
+			//	if (MAMA::Distance(GameState::Bullets()[i]->getCurrentPoint().x, cPos.x, GameState::Bullets()[i]->getCurrentPoint().y, cPos.y) <= 10.0)
+			//	{
+			//		delete GameState::Bullets()[i]; // Deallocates Missile through pointer.
+			//		GameState::Bullets()[i] = nullptr; // Ensures no dangling pointer.
+			//		GameState::Bullets().erase(GameState::Bullets().begin() + i); // Erase element and resize array.
+			//		GameState::Bullets().shrink_to_fit();
+			//		cout << "Bullet hits Enemy\n";
+			//		//
+			//	}
+			//}
 		}
 	}
 	if (m_fireCtr > 0) m_fireCtr--;
