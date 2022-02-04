@@ -260,8 +260,8 @@ void GameState::Exit()
 	{
 		XMLElement* p_element = xmlDoc.NewElement("Turret");
 		p_element->SetAttribute("TurretCount", i);
-		p_element->SetAttribute("position.x", m_turrets[i]->GetPos().x);
-		p_element->SetAttribute("position.y", m_turrets[i]->GetPos().y);
+		p_element->SetAttribute("position.x", m_turrets[i]->getCurrentPosition().x);
+		p_element->SetAttribute("position.y", m_turrets[i]->getCurrentPosition().y);
 		p_root->InsertEndChild(p_element);
 
 		delete m_turrets[i];

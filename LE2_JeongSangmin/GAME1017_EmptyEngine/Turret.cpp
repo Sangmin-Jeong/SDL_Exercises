@@ -17,6 +17,7 @@ Turret::Turret(SDL_Rect dst) :m_dst(dst), m_src({ 0,0,100,100 }), m_angle(0.0), 
 
 void Turret::Update()
 {
+	setCurrentPosition(m_dst);
 	// Click and drag functionality.
 	if (EVMA::MouseHeld(1) && SDL_PointInRect(&EVMA::GetMousePos(), &m_dst)) // More efficient way moving MouseHeld first
 	{
@@ -53,19 +54,6 @@ void Turret::Update()
 			// double dx = MAMA::SetDeltaX(MAMA::Deg2Rad(m_angle-90), 6.0);
 			// double dy = MAMA::SetDeltaY(MAMA::Deg2Rad(m_angle-90), 6.0);
 			GameState::Bullets().push_back(new Bullet({(float)(tPos.x-2), (float)(tPos.y+2), (float)4, (float)4}, dx, dy));
-			//for (unsigned i = 1; i < GameState::Bullets().size(); i++)
-			//{
-			//	cout << MAMA::Distance(GameState::Bullets()[i]->getCurrentPoint().x, cPos.x, GameState::Bullets()[i]->getCurrentPoint().y, cPos.y) << endl;
-			//	if (MAMA::Distance(GameState::Bullets()[i]->getCurrentPoint().x, cPos.x, GameState::Bullets()[i]->getCurrentPoint().y, cPos.y) <= 10.0)
-			//	{
-			//		delete GameState::Bullets()[i]; // Deallocates Missile through pointer.
-			//		GameState::Bullets()[i] = nullptr; // Ensures no dangling pointer.
-			//		GameState::Bullets().erase(GameState::Bullets().begin() + i); // Erase element and resize array.
-			//		GameState::Bullets().shrink_to_fit();
-			//		cout << "Bullet hits Enemy\n";
-			//		//
-			//	}
-			//}
 		}
 	}
 	if (m_fireCtr > 0) m_fireCtr--;
@@ -74,4 +62,14 @@ void Turret::Update()
 void Turret::Render()
 {
 	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), TEMA::GetTexture("turret"), &m_src, &m_dst, m_angle, NULL, SDL_FLIP_NONE); // Change to Ex.
+}
+
+void Turret::setCurrentPosition(SDL_Rect dst)
+{
+	currentPosition = m_dst;
+}
+
+SDL_Rect Turret::getCurrentPosition()
+{
+	return currentPosition;
 }

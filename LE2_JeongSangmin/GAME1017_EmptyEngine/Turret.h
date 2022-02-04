@@ -15,11 +15,15 @@ private:
 	bool m_hasTarget;
 	int m_fireCtr;
 	static int s_coolDown;
+
+	SDL_Rect currentPosition;
 public:
 	Turret(SDL_Rect dst);
 	void Update();
 	void Render();
 	SDL_Point GetPos() const { return { m_dst.x + m_dst.w / 2, m_dst.y + m_dst.h / 2 }; }
+	SDL_Rect getCurrentPosition();
+	void setCurrentPosition(SDL_Rect dst);
 };
 
 #endif

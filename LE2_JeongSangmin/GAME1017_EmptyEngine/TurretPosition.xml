@@ -4,4 +4,5 @@
     <Turret TurretCount="2" position.x="411" position.y="289"/>
     <Turret TurretCount="3" position.x="921" position.y="429"/>
     <Turret TurretCount="4" position.x="238" position.y="402"/>
+    <Turret TurretCount="5" position.x="145" position.y="618"/>
 </Root>
