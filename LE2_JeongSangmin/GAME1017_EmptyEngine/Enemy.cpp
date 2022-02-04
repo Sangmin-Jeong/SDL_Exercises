@@ -14,3 +14,11 @@ void Enemy::Render()
 {
 	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), TEMA::GetTexture("enemy"), &m_src, &m_dst, 180.0, NULL, SDL_FLIP_NONE);
 }
+
+void Enemy::setHits()
+{
+}
+
+void Enemy::getHits()
+{
+}

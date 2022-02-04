@@ -64,5 +64,15 @@ public: // Public methods.
 	virtual void Resume();
 	static std::vector<Bullet*>& Bullets() { return s_bullets; }
 	static std::vector<Enemy*>& Enemies() { return s_enemies; }
+
+	SDL_FRect collisionUp;
+	SDL_FRect collisionDown;
+	SDL_FRect collisionLeft;
+	SDL_FRect collisionRight;
+
+	SDL_Texture* p_cUp;
+	SDL_Texture* p_cDown;
+	SDL_Texture* p_cLeft;
+	SDL_Texture* p_cRight;
 };
 #endif
