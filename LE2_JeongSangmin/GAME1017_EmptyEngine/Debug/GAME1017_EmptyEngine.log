@@ -1,17 +1,2 @@
-﻿  Bullet.cpp
-C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE2_JeongSangmin\GAME1017_EmptyEngine\Bullet.cpp(8,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE2_JeongSangmin\GAME1017_EmptyEngine\Bullet.cpp(9,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE2_JeongSangmin\GAME1017_EmptyEngine\Bullet.cpp(10,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE2_JeongSangmin\GAME1017_EmptyEngine\Bullet.cpp(11,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE2_JeongSangmin\GAME1017_EmptyEngine\Bullet.cpp(16,13): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE2_JeongSangmin\GAME1017_EmptyEngine\Bullet.cpp(17,13): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-  Engine.cpp
-  StateManager.cpp
-  States.cpp
-  Turret.cpp
-C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE2_JeongSangmin\GAME1017_EmptyEngine\Turret.cpp(41,37): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
-C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE2_JeongSangmin\GAME1017_EmptyEngine\Turret.cpp(41,37): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE2_JeongSangmin\GAME1017_EmptyEngine\Turret.cpp(41,64): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
-C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE2_JeongSangmin\GAME1017_EmptyEngine\Turret.cpp(41,64): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
+﻿  States.cpp
   GAME1017_EmptyEngine.vcxproj -> C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE2_JeongSangmin\Debug\GAME1017_EmptyEngine.exe
