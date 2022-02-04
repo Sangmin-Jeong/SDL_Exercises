@@ -16,7 +16,7 @@ Turret::Turret(SDL_Rect dst) :m_dst(dst), m_src({ 0,0,100,100 }), m_angle(0.0), 
 void Turret::Update()
 {
 	// Click and drag functionality.
-	if (EVMA::MouseHeld(1) && SDL_PointInRect(&EVMA::GetMousePos(), &m_dst))
+	if (EVMA::MouseHeld(1) && SDL_PointInRect(&EVMA::GetMousePos(), &m_dst)) // More efficient way moving MouseHeld first
 	{
 		m_dst.x = EVMA::GetMousePos().x - m_dst.w / 2;
 		m_dst.y = EVMA::GetMousePos().y - m_dst.h / 2;

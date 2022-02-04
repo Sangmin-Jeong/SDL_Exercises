@@ -1,4 +1,6 @@
 ﻿  Engine.cpp
+  Main.cpp
+  SoundManager.cpp
   StateManager.cpp
   States.cpp
   Generating Code...

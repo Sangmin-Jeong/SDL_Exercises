@@ -7,7 +7,7 @@ void TextureManager::Init()
 	if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0)
 	{
 		std::cout << "Image init success!" << std::endl;
-		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2"); // for Good Image quality  (0~2)
 	}
 	else
 		std::cout << "Image init failed: ERROR - " << IMG_GetError() << std::endl;

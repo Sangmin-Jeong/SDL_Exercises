@@ -1,0 +1,8 @@
+<Root>
+    <Turret TurretCount="0" position.x="406" position.y="701"/>
+    <Turret TurretCount="1" position.x="409" position.y="415"/>
+    <Turret TurretCount="2" position.x="344" position.y="746"/>
+    <Turret TurretCount="3" position.x="222" position.y="274"/>
+    <Turret TurretCount="4" position.x="219" position.y="682"/>
+    <Turret TurretCount="5" position.x="229" position.y="474"/>
+</Root>
