@@ -384,12 +384,6 @@ void Engine::Sleep()
 	}
 }
 
-Engine& Engine::Instance()
-{
-	static Engine instance;
-	return instance;
-}
-
 // Run function. Contains the game loop.
 int Engine::Run()
 {

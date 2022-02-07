@@ -45,15 +45,8 @@ private:
 	void Sleep();
 	bool KeyDown(SDL_Scancode c);
 	void Update();
-	Engine()
-	{
-		cout << "Creating instance of Engine..." << endl;
-	}
 
 public:
-	static Engine& Instance();
-	int Run();
-
 	SDL_Rect m_player;
 	SDL_Rect m_dst;
 	SDL_Rect m_bg1, m_bg2;	
@@ -88,5 +81,7 @@ public:
 	Mix_Music* m_pBGM;
 
 	int m_life;
+
+	int Run();
 };
 #endif
