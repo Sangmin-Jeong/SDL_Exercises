@@ -1,4 +1,11 @@
 #include "Engine.h"
+#include "CollisionManager.h"
+#include "EventManager.h"
+#include "StateManager.h"
+#include "TextureManager.h"
+#include "StateManager.h"
+#include "States.h"
+#include <ctime>
 
 int Engine::Init(const char* title, int xPos, int yPos, int width, int height, int flags)
 {
@@ -14,6 +21,7 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
 			if (m_pRenderer != nullptr)
 			{
+				EVMA::Init();
 				if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0)
 				{
 					m_pBGTexture = IMG_LoadTexture(m_pRenderer, "Background.png");
@@ -72,6 +80,7 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 	Mix_Volume(-1, 64); // All sfx
 	Mix_PlayMusic(m_pBGM, -1); // negative number means infinity loop
 
+	STMA::ChangeState(new TitleState());
 	cout << "Initialization successful!" << endl;
 	m_running = true;
 	return true;
@@ -80,6 +89,7 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 void Engine::HandleEvents()
 {
 	//cout << "Getting input..." << endl;
+	EVMA::HandleEvents();
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
@@ -128,6 +138,7 @@ bool Engine::KeyDown(SDL_Scancode c)
 // Update function. Moves objects, performs physics, e.g. projectiles, gravity, collisions.
 void Engine::Update()
 {
+	STMA::Update();
 	randomX = rand() % 1024 + 1024; // 1024+1024  for off-screen
 	randomY = rand() % 669; // 669 
 	int positionX = randomX + 20;
@@ -275,6 +286,13 @@ void Engine::Update()
 	//}
 }
 
+Engine& Engine::Instance()
+{
+	static Engine instance;
+	return instance;
+
+}
+
 // Render function. Renders changes in game objects to window.
 void Engine::Render()
 {
@@ -363,7 +381,8 @@ void Engine::Clean()
 
 	Mix_CloseAudio();
 	Mix_Quit();
-
+	STMA::Quit();
+	EVMA::Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
@@ -391,7 +410,7 @@ int Engine::Run()
 	{
 		return 1;
 	}
-	if (Init("Sangmin Jeong", SDL_WINDOWPOS_CENTERED,
+	if (Init("GAME1017_A1_JeongSangmin", SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, 0) == false) // If initialization failed.
 	{
 		return 2;
