@@ -37,6 +37,7 @@ private:
 	SDL_Texture* m_pDiedTexture;
 
 private:
+	Engine() {  }
 	int Init(const char* title, int xPos, int yPos, int width, int height, int flags);
 	void Clean();
 	void Wake();
@@ -47,6 +48,10 @@ private:
 	void Update();
 
 public:
+	static Engine& Instance();
+	SDL_Renderer* GetRenderer() { return m_pRenderer; }
+	bool& Running() { return m_running; }
+	int Run();
 	SDL_Rect m_player;
 	SDL_Rect m_dst;
 	SDL_Rect m_bg1, m_bg2;	
@@ -81,7 +86,5 @@ public:
 	Mix_Music* m_pBGM;
 
 	int m_life;
-
-	int Run();
 };
 #endif
