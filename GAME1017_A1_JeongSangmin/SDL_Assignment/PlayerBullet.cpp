@@ -1,4 +1,7 @@
 #include "PlayerBullet.h"
+#include "Engine.h"
+#include "MathManager.h"
+#include "States.h"
 
 PlayerBullet::PlayerBullet(int x, int y)
 {
@@ -9,4 +12,9 @@ PlayerBullet::PlayerBullet(int x, int y)
 void PlayerBullet::Update()
 {
 	m_playerBulletDst.x += 3;
+}
+
+void PlayerBullet::Render()
+{
+	
 }

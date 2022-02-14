@@ -154,7 +154,6 @@ void GameState::Update()
 			break;
 		}
 	}
-		
 
 	for (unsigned i = 0; i < s_bullets.size(); i++)
 	{

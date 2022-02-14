@@ -1,5 +1,7 @@
 #include "Engine.h"
 
+#include "StateManager.h"
+
 int Engine::Init(const char* title, int xPos, int yPos, int width, int height, int flags)
 {
 	cout << "Initializing game..." << endl;
@@ -72,7 +74,7 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 	Mix_Volume(-1, 64); // All sfx
 	Mix_PlayMusic(m_pBGM, -1); // negative number means infinity loop
 
-
+	STMA::ChangeState(new TitleState());
 	cout << "Initialization successful!" << endl;
 	m_running = true;
 	return true;

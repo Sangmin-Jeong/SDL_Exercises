@@ -29,7 +29,13 @@ void EventManager::HandleEvents()
 				Engine::Instance().Running() = false;
 				break;
 			case SDL_KEYDOWN:
-				s_lastKeyDown = event.key.keysym.sym;
+				if (event.key.keysym.sym == SDLK_SPACE) // Pressing spacebar.
+				{
+					m_PlayerBullets.push_back(new PlayerBullet((m_dst.x + 30), (m_dst.y + 30)));
+					m_PlayerBullets.shrink_to_fit();
+					Mix_PlayChannel(-1, m_pPlayerBullet, 0);
+					cout << m_PlayerBullets.size() << endl;
+				}
 				break;
 			case SDL_KEYUP:
 				s_lastKeyUp = event.key.keysym.sym;

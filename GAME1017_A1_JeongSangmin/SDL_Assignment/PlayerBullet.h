@@ -18,11 +18,11 @@ using namespace std;
 class PlayerBullet
 {
 private:
-
-public:
-
 	SDL_Rect m_playerBulletDst;
 	SDL_Rect m_playerBulletSrc;
+public:
+
+	void getbulletDst();
 	PlayerBullet(int = 0, int = 0);
 	void Update();
 };
