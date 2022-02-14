@@ -166,6 +166,10 @@ void GameState::Update()
 				{
 					SOMA::PlaySound("explode");
 					// New asteroid chunk spawn code. Hints:
+					m_objects.push_back(pair<string, GameObject*>("chunks",
+						new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w/2,ast->GetDst()->h/2 })));
+					m_objects.push_back(pair<string, GameObject*>("chunks",
+						new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w / 2,ast->GetDst()->h / 2 })));
 
 					// You would only need to spawn two chunks if the asteroid that is hit is full size or one smaller than full.
 					// As yourself why the bullet and asteroid that are colliding are only getting destroyed AFTER the two chunks spawn.

@@ -7,7 +7,6 @@
 Asteroid::Asteroid(SDL_Rect s, SDL_FRect d) : SpriteObject(s, d),
 m_angle(0.0), m_radius(33.0)
 {
-	Setlife(2);
 	m_center = { (m_dst.x + m_dst.w / 2.0f), (m_dst.y + m_dst.h / 2.0f) };
 	m_rotSpeed = (1.0 + rand() % 5) * (rand() % 2 * 2.0 - 1.0); // -1 or 1
 	MAMA::SetDeltas(MAMA::Deg2Rad((rand() % 360) - 90.0), m_dx, m_dy, 2.0f, 2.0f);
@@ -53,6 +52,14 @@ AsteroidField::AsteroidField(unsigned int sz) :GameObject({ 0,0,0,0 }), m_size(s
 	}
 	m_asteroids.shrink_to_fit();
 }
+
+//void AsteroidField::AsteroidChunks()
+//{
+//	m_asteroids.push_back(new Asteroid({ 539, 0, 61, 66 },
+//		{ 25.0f + rand() % 901, (i % 2 == 0 ? 25.0f : 600.0f) + (rand() % 76),
+//		m_asteroids[], 66.0f}));
+//	m_asteroids.shrink_to_fit();
+//}
 
 AsteroidField::~AsteroidField()
 {

@@ -38,6 +38,8 @@ public:
 	void Render();
 	vector<Asteroid*>& GetAsteroids() { return m_asteroids; }
 	const unsigned int GetSize() { return m_size; }
+
+	/*void AsteroidChunks();*/
 private:
 	vector<Asteroid*> m_asteroids;
 	int m_size;
