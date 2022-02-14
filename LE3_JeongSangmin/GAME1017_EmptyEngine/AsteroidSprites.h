@@ -15,6 +15,9 @@ public:
 	const SDL_FPoint& GetCenter() { return m_center; }
 	const double& GetRadius() { return m_radius; }
 	void SetColMods(Uint8 r, Uint8 g, Uint8 b);
+
+	static int Getlife() { return s_life; }
+	static void Setlife(int c) { s_life = c; }
 private:
 	SDL_FPoint m_center;
 	double m_angle,
@@ -22,6 +25,8 @@ private:
 		m_radius,
 		m_rotSpeed;
 	Uint8 m_rMod, m_gMod, m_bMod;
+
+	static int s_life;
 };
 
 class AsteroidField : public GameObject
@@ -63,7 +68,7 @@ public: // Methods.
 	void Update();
 	void Render();
 	const SDL_FPoint& GetCenter() { return m_center; }
-	const double& GetRadius() { /*return m_radius;*/ }
+	const double& GetRadius() { return m_radius; }
 	vector<Bullet*>& GetBullets() { return m_bullets; }
 private: // Properties.
 	SDL_FPoint m_center;
