@@ -21,6 +21,7 @@ protected: // Private but inherited
 	State() {} // What does this prevent?
 	vector<std::pair<std::string, GameObject*>> m_objects;
 	vector<Asteroid*> m_chunks;
+	vector<Asteroid*> m_chunks2;
 };
 
 class TitleState : public State

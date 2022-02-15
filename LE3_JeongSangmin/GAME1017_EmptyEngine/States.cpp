@@ -166,6 +166,19 @@ void GameState::Update()
 				return;
 			}
 		}
+		for (unsigned int i = 0; i < m_chunks2.size(); i++)
+		{
+			Asteroid* ast = m_chunks2.at(i);
+			if (COMA::CircleCircleCheck(ship->GetCenter(), ast->GetCenter(),
+				ship->GetRadius(), ast->GetRadius()))
+			{
+				SOMA::PlaySound("explode");
+				delete ship;
+				m_objects.erase(GetIt("ship")); // Erases whole ship std::pair.
+				m_objects.shrink_to_fit();
+				return;
+			}
+		}
 		// Bullets vs. asteroids. With temp fields for bullets.
 		vector<Bullet*>* bullets = &ship->GetBullets();
 		for (unsigned int i = 0; i < bullets->size(); i++)
@@ -193,11 +206,16 @@ void GameState::Update()
 					ast->Setlife(ast->Getlife() - 1);
 					m_chunks.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w / 2,ast->GetDst()->h / 2 }));
 					m_chunks.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
+					m_chunks.back()->SetDelXY(bul->GetDelX(),bul->GetDelY());
+					
 					m_chunks.back()->Update();
+
 					m_chunks.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w / 2,ast->GetDst()->h / 2 }));
 					m_chunks.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
+					m_chunks.back()->SetDelXY(bul->GetDelX(), bul->GetDelY());
+				
 					m_chunks.back()->Update();
-					cout << m_chunks.size() << endl;
+
 					// You would only need to spawn two chunks if the asteroid that is hit is full size or one smaller than full.
 					// As yourself why the bullet and asteroid that are colliding are only getting destroyed AFTER the two chunks spawn.
 					// What data can you get from the bullet and asteroid that the chunks need?
@@ -225,12 +243,46 @@ void GameState::Update()
 					SOMA::PlaySound("explode");
 
 					ast->Setlife(ast->Getlife() - 1);
+					m_chunks2.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w / 3, ast->GetDst()->h / 3 }));
+					m_chunks2.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
+					m_chunks2.back()->SetDelXY(bul->GetDelX(), bul->GetDelY());
+
+					m_chunks2.back()->Update();
+					m_chunks2.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w / 3,ast->GetDst()->h / 3 }));
+					m_chunks2.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
+					m_chunks2.back()->SetDelXY(bul->GetDelX(), bul->GetDelY());
+					m_chunks2.back()->Update();
+
 					delete bul;
 					bullets->erase(bullets->begin() + i);
 					bullets->shrink_to_fit();
 					delete ast;
 					m_chunks.erase(m_chunks.begin() + j);
 					m_chunks.shrink_to_fit();
+					return;
+				}
+			}
+		}
+
+		for (unsigned int i = 0; i < bullets->size(); i++)
+		{
+			Bullet* bul = bullets->at(i);
+			for (unsigned int j = 0; j < m_chunks2.size(); j++)
+			{
+				Asteroid* ast = m_chunks2.at(j);
+				if (COMA::CircleCircleCheck(bul->GetCenter(), ast->GetCenter(),
+					bul->GetRadius(), ast->GetRadius()))
+				{
+					SOMA::PlaySound("explode");
+
+					ast->Setlife(ast->Getlife() - 1);
+
+					delete bul;
+					bullets->erase(bullets->begin() + i);
+					bullets->shrink_to_fit();
+					delete ast;
+					m_chunks2.erase(m_chunks2.begin() + j);
+					m_chunks2.shrink_to_fit();
 					return;
 				}
 			}
@@ -245,8 +297,13 @@ void GameState::Render()
 	SDL_RenderClear(Engine::Instance().GetRenderer());
 	for (auto const& i : m_objects)
 		i.second->Render();
+
 	for (auto const& i : m_chunks)
 		i->Render();
+
+	for (auto const& i : m_chunks2)
+		i->Render();
+
 	if ( dynamic_cast<GameState*>(STMA::GetStates().back()) ) // Check to see if current state is of type GameState
 		State::Render();
 }

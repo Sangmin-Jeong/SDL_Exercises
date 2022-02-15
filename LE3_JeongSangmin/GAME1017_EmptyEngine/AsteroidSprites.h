@@ -19,21 +19,22 @@ public:
 	int Getlife() { return m_life; }
 	void Setlife(int c) { m_life = c; }
 
-	//void SetAngle(double a) { this->m_angle = a; }
-	//double GetAngle() { return m_angle; }
+	void SetAngle(double a) { this->m_angle = a; }
+	double GetAngle() { return this->m_angle; }
 
-	vector<Asteroid*>& GetChunks() { return m_chunks; }
-	const unsigned int GetSize() { return m_size; }
+	void SetDelXY(double dx, double dy)
+	{
+		m_dx = m_dx + dx/3.5;
+		m_dy = m_dy + dy/3.5;
+	}
 	
 private:
 	double m_angle,
 		m_radius,
 		m_rotSpeed;
+	double m_dx, m_dy;
 
 	int m_life;
-
-	vector<Asteroid*> m_chunks;
-	int m_size;
 	
 };
 
@@ -60,6 +61,13 @@ public:
 	void Render();
 	const SDL_FPoint& GetCenter() { return m_center; }
 	const double& GetRadius() { return m_radius; }
+
+	double GetDelX() { return m_dx; }
+	double GetDelY() { return m_dy; }
+
+	void SetAngle(double a) { this->m_angle = a; }
+	double GetAngle() { return this->m_angle; }
+
 private:
 	SDL_FPoint m_center;
 	int m_ctr, m_ctrMax;

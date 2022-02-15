@@ -25,12 +25,6 @@ public: // Methods.
 	Uint8 GetGMod() { return m_gMod; }
 	Uint8 GetBMod() { return m_bMod; }
 
-	void SetDeltas()
-	{
-		m_dx = -m_dx;
-		m_dy = -m_dy;
-	}
-
 
 protected: // Attributes.
 	SDL_FRect m_dst;
@@ -39,7 +33,7 @@ protected: // Attributes.
 	Uint8 m_rMod, m_gMod, m_bMod;
 
 	SDL_FPoint m_center;
-	double m_dx, m_dy;
+
 
 protected: // Methods.
 	GameObject() :m_dst({ 0,0,0,0 }), m_enabled(true) {}
