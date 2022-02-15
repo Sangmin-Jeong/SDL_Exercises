@@ -3,9 +3,10 @@
 #include "EventManager.h"
 #include "SoundManager.h"
 #include "MathManager.h"
+#include "States.h"
 
 Asteroid::Asteroid(SDL_Rect s, SDL_FRect d) : SpriteObject(s, d),
-m_angle(0.0), m_radius(33.0)
+                                              m_angle(0.0), m_radius(33.0), m_life(2)
 {
 	m_center = { (m_dst.x + m_dst.w / 2.0f), (m_dst.y + m_dst.h / 2.0f) };
 	m_rotSpeed = (1.0 + rand() % 5) * (rand() % 2 * 2.0 - 1.0); // -1 or 1
@@ -30,15 +31,14 @@ void Asteroid::Update()
 
 void Asteroid::Render()
 {
-	SDL_SetTextureColorMod(TEMA::GetTexture("sprites"), 255-m_rMod, 255-m_gMod, 255-m_bMod);
-	SDL_RenderCopyExF(Engine::Instance().GetRenderer(), TEMA::GetTexture("sprites"),
-		&m_src, &m_dst, m_angle, nullptr, SDL_FLIP_NONE);
-	SDL_SetTextureColorMod(TEMA::GetTexture("sprites"), 255, 255, 255); // Resetting it so not all sprites are tinted this way.
-}
-
-void Asteroid::SetColMods(Uint8 r, Uint8 g, Uint8 b)
-{
-	m_rMod = r; m_gMod = g; m_bMod = b;
+	if (m_life > 0)
+	{
+		SDL_SetTextureColorMod(TEMA::GetTexture("sprites"), 255 - m_rMod, 255 - m_gMod, 255 - m_bMod);
+		SDL_RenderCopyExF(Engine::Instance().GetRenderer(), TEMA::GetTexture("sprites"),
+			&m_src, &m_dst, m_angle, nullptr, SDL_FLIP_NONE);
+		SDL_SetTextureColorMod(TEMA::GetTexture("sprites"), 255, 255, 255); // Resetting it so not all sprites are tinted this way.
+		Update();
+	}
 }
 
 AsteroidField::AsteroidField(unsigned int sz) :GameObject({ 0,0,0,0 }), m_size(sz)
@@ -51,15 +51,20 @@ AsteroidField::AsteroidField(unsigned int sz) :GameObject({ 0,0,0,0 }), m_size(s
 		m_asteroids.back()->SetColMods((rand() % 129), (rand() % 129), (rand() % 129));
 	}
 	m_asteroids.shrink_to_fit();
+
+	//if (m_size == 0)
+	//{
+	//	m_asteroids.push_back(new Asteroid({ 539, 0, 61, 66 },
+	//		{ this->GetDst()->x, this->GetDst()->y, 30,  33}));
+	//	m_asteroids.back()->SetColMods(this->GetRMod(), this->GetGMod(), this->GetBMod());
+	//	m_asteroids.shrink_to_fit();
+	//	m_asteroids.push_back(new Asteroid({ 539, 0, 61, 66 },
+	//		{ this->GetDst()->x, this->GetDst()->y, 30, 33 }));
+	//	m_asteroids.back()->SetColMods(this->GetRMod(), this->GetGMod(), this->GetBMod());
+	//	m_asteroids.shrink_to_fit();
+	//}
 }
 
-//void AsteroidField::AsteroidChunks()
-//{
-//	m_asteroids.push_back(new Asteroid({ 539, 0, 61, 66 },
-//		{ 25.0f + rand() % 901, (i % 2 == 0 ? 25.0f : 600.0f) + (rand() % 76),
-//		m_asteroids[], 66.0f}));
-//	m_asteroids.shrink_to_fit();
-//}
 
 AsteroidField::~AsteroidField()
 {
@@ -73,8 +78,8 @@ AsteroidField::~AsteroidField()
 
 void AsteroidField::Update()
 {
-	for (const auto a : m_asteroids)
-		a->Update();
+	//for (const auto a : m_asteroids)
+	//	a->Update();
 }
 
 void AsteroidField::Render()

@@ -15,9 +15,32 @@ public: // Methods.
 	SDL_FRect* GetDst() { return &m_dst; }
 	const bool GetEnabled() const { return m_enabled; }
 	void SetEnabled(const bool e) { m_enabled = e; }
+
+	void SetColMods(Uint8 r, Uint8 g, Uint8 b)
+	{
+		m_rMod = r; m_gMod = g; m_bMod = b;
+	}
+
+	Uint8 GetRMod() { return m_rMod; }
+	Uint8 GetGMod() { return m_gMod; }
+	Uint8 GetBMod() { return m_bMod; }
+
+	void SetDeltas()
+	{
+		m_dx = -m_dx;
+		m_dy = -m_dy;
+	}
+
+
 protected: // Attributes.
 	SDL_FRect m_dst;
 	bool m_enabled;
+
+	Uint8 m_rMod, m_gMod, m_bMod;
+
+	SDL_FPoint m_center;
+	double m_dx, m_dy;
+
 protected: // Methods.
 	GameObject() :m_dst({ 0,0,0,0 }), m_enabled(true) {}
 	GameObject(const SDL_FRect d) :m_dst(d), m_enabled(true) {}

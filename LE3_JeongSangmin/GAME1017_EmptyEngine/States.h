@@ -2,6 +2,7 @@
 #ifndef _STATES_H_
 #define _STATES_H_
 
+#include "AsteroidSprites.h"
 #include "TiledLevel.h"
 #include "GameObject.h"
 
@@ -19,6 +20,7 @@ public:
 protected: // Private but inherited
 	State() {} // What does this prevent?
 	vector<std::pair<std::string, GameObject*>> m_objects;
+	vector<Asteroid*> m_chunks;
 };
 
 class TitleState : public State

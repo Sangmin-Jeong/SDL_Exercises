@@ -14,19 +14,27 @@ public:
 	void Render();
 	const SDL_FPoint& GetCenter() { return m_center; }
 	const double& GetRadius() { return m_radius; }
-	void SetColMods(Uint8 r, Uint8 g, Uint8 b);
+	
 
-	static int Getlife() { return s_life; }
-	static void Setlife(int c) { s_life = c; }
+	int Getlife() { return m_life; }
+	void Setlife(int c) { m_life = c; }
+
+	//void SetAngle(double a) { this->m_angle = a; }
+	//double GetAngle() { return m_angle; }
+
+	vector<Asteroid*>& GetChunks() { return m_chunks; }
+	const unsigned int GetSize() { return m_size; }
+	
 private:
-	SDL_FPoint m_center;
 	double m_angle,
-		m_dx, m_dy,
 		m_radius,
 		m_rotSpeed;
-	Uint8 m_rMod, m_gMod, m_bMod;
 
-	static int s_life;
+	int m_life;
+
+	vector<Asteroid*> m_chunks;
+	int m_size;
+	
 };
 
 class AsteroidField : public GameObject
@@ -39,7 +47,6 @@ public:
 	vector<Asteroid*>& GetAsteroids() { return m_asteroids; }
 	const unsigned int GetSize() { return m_size; }
 
-	/*void AsteroidChunks();*/
 private:
 	vector<Asteroid*> m_asteroids;
 	int m_size;
