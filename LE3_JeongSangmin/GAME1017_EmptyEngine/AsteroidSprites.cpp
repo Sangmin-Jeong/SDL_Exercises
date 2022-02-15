@@ -24,8 +24,8 @@ void Asteroid::Update()
 	else if (m_center.y < -m_dst.h / 2) m_center.y = HEIGHT + m_dst.h / 2;
 	else if (m_center.y > HEIGHT + m_dst.h / 2) m_center.y = 0 - m_dst.h / 2;
 	// Update dest rectangle.
-	m_dst.x = m_center.x - m_dst.w / 2;
-	m_dst.y = m_center.y - m_dst.h / 2;
+	m_dst.x = m_center.x - m_dst.w / 3;
+	m_dst.y = m_center.y - m_dst.h / 3;
 }
 
 void Asteroid::Render()

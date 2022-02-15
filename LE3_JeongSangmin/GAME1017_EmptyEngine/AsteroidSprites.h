@@ -24,8 +24,8 @@ public:
 
 	void SetDelXY(double dx, double dy)
 	{
-		m_dx = m_dx + dx/3.5;
-		m_dy = m_dy + dy/3.5;
+		m_dx = m_dx + dx/3.9;
+		m_dy = m_dy + dy/3.9;
 	}
 	
 private:
