@@ -5,11 +5,11 @@
 #include "States.h"
 
 Asteroid::Asteroid(SDL_Rect s, SDL_FRect d) : SpriteObject(s, d),
-                                              m_angle((rand() % 360) - 90.0), m_radius(33.0), m_life(3)
+                                              m_angle(0.0), m_radius(33.0), m_life(3)
 {
 	m_center = { (m_dst.x + m_dst.w / 2.0f), (m_dst.y + m_dst.h / 2.0f) };
 	m_rotSpeed = (1.0 + rand() % 5) * (rand() % 2 * 2.0 - 1.0); // -1 or 1
-	MAMA::SetDeltas(MAMA::Deg2Rad(m_angle), m_dx, m_dy, 2.0f, 2.0f);
+	MAMA::SetDeltas(MAMA::Deg2Rad((rand() % 360) - 90.0), m_dx, m_dy, 2.0f, 2.0f);
 }
 
 void Asteroid::Update()
@@ -97,6 +97,7 @@ Bullet::Bullet(SDL_Rect s, SDL_FRect d, const char* key, const double angle):
 
 void Bullet::Update()
 {
+	SetAngle(m_angle);
 	// Move object.
 	m_center.x += (float)m_dx;
 	m_center.y += (float)m_dy;

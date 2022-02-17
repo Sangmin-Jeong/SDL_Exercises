@@ -204,16 +204,14 @@ void GameState::Update()
 					m_objects.back().second->SetDeltas();*/
 					
 					ast->Setlife(ast->Getlife() - 1);
-					m_chunks.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w / 2,ast->GetDst()->h / 2 }));
+					m_chunks.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f,ast->GetDst()->h * 0.66f }));
 					m_chunks.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
-					m_chunks.back()->SetDelXY(bul->GetDelX(),bul->GetDelY());
-					
+					m_chunks.back()->SetAngle(bul->GetAngle() - 45.0);
 					m_chunks.back()->Update();
 
-					m_chunks.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w / 2,ast->GetDst()->h / 2 }));
+					m_chunks.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f,ast->GetDst()->h * 0.66f }));
 					m_chunks.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
-					m_chunks.back()->SetDelXY(bul->GetDelX(), bul->GetDelY());
-				
+					m_chunks.back()->SetAngle(bul->GetAngle() + 45.0);
 					m_chunks.back()->Update();
 
 					// You would only need to spawn two chunks if the asteroid that is hit is full size or one smaller than full.
@@ -243,14 +241,14 @@ void GameState::Update()
 					SOMA::PlaySound("explode");
 
 					ast->Setlife(ast->Getlife() - 1);
-					m_chunks2.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w / 3, ast->GetDst()->h / 3 }));
+					m_chunks2.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f, ast->GetDst()->h * 0.66f }));
 					m_chunks2.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
-					m_chunks2.back()->SetDelXY(bul->GetDelX(), bul->GetDelY());
+					m_chunks2.back()->SetAngle(-bul->GetAngle() - (45.0));
 
 					m_chunks2.back()->Update();
-					m_chunks2.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w / 3,ast->GetDst()->h / 3 }));
+					m_chunks2.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f,ast->GetDst()->h * 0.66f }));
 					m_chunks2.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
-					m_chunks2.back()->SetDelXY(bul->GetDelX(), bul->GetDelY());
+					m_chunks2.back()->SetAngle(-bul->GetAngle() + (45.0));
 					m_chunks2.back()->Update();
 
 					delete bul;

@@ -21,12 +21,6 @@ public:
 
 	void SetAngle(double a) { this->m_angle = a; }
 	double GetAngle() { return this->m_angle; }
-
-	void SetDelXY(double dx, double dy)
-	{
-		m_dx = m_dx + dx/3.9;
-		m_dy = m_dy + dy/3.9;
-	}
 	
 private:
 	double m_angle,
