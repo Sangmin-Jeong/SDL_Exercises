@@ -79,8 +79,6 @@ void GameState::Enter()
 {
 	player.SetTexture(IMG_LoadTexture(Engine::Instance().GetRenderer(), "Player.png"));
 	m_pBGTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Background.png");
-	m_pEnemyTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Enemy.png");
-	m_pBulletsTexture1 = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Shoot2.png");
 	m_pDiedTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Died.png");
 
 	m_pBoom = Mix_LoadWAV("aud/boom.wav");
@@ -91,6 +89,11 @@ void GameState::Enter()
 	m_pMusic = Mix_LoadMUS("aud/Thundercats.mp3");
 
 	Mix_PlayMusic(m_pBGM, -1); // negative number means infinity loop
+
+	m_bg1 = { 0, 0, 1024, 768 };
+	m_bg2 = { 1024, 0, 1024, 768 };
+	m_diedSrc = { 0, 0, 1050, 1050 };
+	m_diedDst = { 260, 100, 500, 500 };
 }
 
 void GameState::Update()
@@ -104,12 +107,6 @@ void GameState::Update()
 		m_PlayerBullets.push_back(new PlayerBullet(player.GetDst()));
 		m_PlayerBullets.back()->SetTexture(IMG_LoadTexture(Engine::Instance().GetRenderer(), "Shoot1.png"));
 	}
-	
-
-	randomX = rand() % 1024 + 1024; // 1024+1024  for off-screen
-	randomY = rand() % 669; // 669 
-	int positionX = randomX + 20;
-	int positionY = randomY + 50;
 
 	m_bg1.x -= SPEED;
 	m_bg2.x -= SPEED;
@@ -123,17 +120,16 @@ void GameState::Update()
 	if (m_enemyCtr++ == m_enemyMax)
 	{
 		m_enemyCtr = 0;
-		/*m_Enemies.push_back(new Enemy({ rand() % 1024 + 1024, rand() % 669 }));*/
-		m_Enemies.push_back(new Enemy(randomX, randomY, 2));
-		//cout << m_Enemies.size() << endl;
+		m_Enemies.push_back(new Enemy(player.GetDst()));
+		m_Enemies.back()->SetTexture(IMG_LoadTexture(Engine::Instance().GetRenderer(), "Enemy.png"));
 	}
 
 	if (m_bulletCtr++ == m_bulletMax)
 	{
 		m_bulletCtr = 0;
-		m_Bullets.push_back(new Bullet(positionX, positionY));
+		m_Bullets.push_back(new Bullet(m_Enemies.back()->GetDst()));
+		m_Bullets.back()->SetTexture(IMG_LoadTexture(Engine::Instance().GetRenderer(), "Shoot2.png"));
 		Mix_PlayChannel(-1, m_pEnemyBullet, 1);
-		cout << m_Bullets.size() << endl;
 	}
 
 	if (player.GetDst().y < 688 && player.GetDst().y > 0 && player.GetDst().x < 930 && player.GetDst().x > 0)
@@ -152,78 +148,123 @@ void GameState::Update()
 	else if (player.GetDst().y <= 0) { player.GetDst().y += 1; }
 	else if (player.GetDst().y >= 688) { player.GetDst().y -= 1; }
 
+	// Collision for Enemy
 	for (unsigned i = 0; i < m_Enemies.size(); i++)
 	{
 		m_Enemies[i]->Update();
-		if (m_Enemies[i]->m_enemyDst.x <= -m_Enemies[i]->m_enemyDst.w)
+		if (m_Enemies[i]->GetDst().x <= -m_Enemies[i]->GetDst().w)
 		{
-			delete m_Enemies[i]; // Deallocates Missile through pointer.
-			m_Enemies[i] = nullptr; // Ensures no dangling pointer.
-			m_Enemies.erase(m_Enemies.begin() + i); // Erase element and resize array.
+			delete m_Enemies[i]; 
+			m_Enemies[i] = nullptr; 
+			m_Enemies.erase(m_Enemies.begin() + i); 
 			m_Enemies.shrink_to_fit();
 			cout << "Enemy object deleted\n";
 			break;
 		}
+
+		if(SDL_HasIntersection(&m_Enemies[i]->GetDst(), &player.GetDst())) 
+		{
+			cout << "Enemy Boom!" << endl;
+			Mix_PlayChannel(-1, m_pBoom, 1);
+			// Deallocate missile.
+			delete m_Enemies[i]; 
+			m_Enemies[i] = nullptr; 
+			m_Enemies.erase(m_Enemies.begin() + i); 
+			m_Enemies.shrink_to_fit();
+			player.SetTint(player.GetTint() - 32);
+			player.SetLife(player.GetLife() - 1);
+			break;
+		}
 	}
 
+	// Collision for enemies' bullets
 	for (unsigned i = 0; i < m_Bullets.size(); i++)
 	{
 		m_Bullets[i]->Update();
-		if (m_Bullets[i]->m_bulletDst.x <= -m_Bullets[i]->m_bulletSrc.w) // m_Bullets[i]->m_bulletSrc.w
+		if (m_Bullets[i]->GetDst().x <= -m_Bullets[i]->GetSrc().w)
 		{
-			delete m_Bullets[i]; // Deallocates Missile through pointer.
-			m_Bullets[i] = nullptr; // Ensures no dangling pointer.
-			m_Bullets.erase(m_Bullets.begin() + i); // Erase element and resize array.
+			delete m_Bullets[i]; 
+			m_Bullets[i] = nullptr; 
+			m_Bullets.erase(m_Bullets.begin() + i); 
 			m_Bullets.shrink_to_fit();
 			cout << "Bullet object deleted\n";
 			break;
 		}
+
+		if (SDL_HasIntersection(&m_Bullets[i]->GetDst(), &player.GetDst()))
+		{
+			cout << "Bullet Boom!" << endl;
+			Mix_PlayChannel(-1, m_pBoom, 1);
+			delete m_Bullets[i]; 
+			m_Bullets[i] = nullptr; 
+			m_Bullets.erase(m_Bullets.begin() + i); 
+			m_Bullets.shrink_to_fit();
+			player.SetTint(player.GetTint() - 32);
+			player.SetLife(player.GetLife() - 1);
+			break;
+		}
 	}
 
+	// Collision for player's bullets
 	for (unsigned i = 0; i < m_PlayerBullets.size(); i++)
 	{
 		m_PlayerBullets[i]->Update();
-		if (m_PlayerBullets[i]->GetDst().x >= 1024) // m_Bullets[i]->m_bulletSrc.w
+		if (m_PlayerBullets[i]->GetDst().x >= 1024)
 		{
-			delete m_PlayerBullets[i]; // Deallocates Missile through pointer.
-			m_PlayerBullets[i] = nullptr; // Ensures no dangling pointer.
-			m_PlayerBullets.erase(m_PlayerBullets.begin() + i); // Erase element and resize array.
+			delete m_PlayerBullets[i]; 
+			m_PlayerBullets[i] = nullptr; 
+			m_PlayerBullets.erase(m_PlayerBullets.begin() + i); 
 			m_PlayerBullets.shrink_to_fit();
 			cout << "Player's Bullet object deleted\n";
 			break;
 		}
+
+		for (unsigned j = 0; j < m_Enemies.size(); j++)
+		{
+			if (SDL_HasIntersection(&m_PlayerBullets[i]->GetDst(), &m_Enemies[j]->GetDst())) 
+			{
+				cout << "Player Bullet Boom!" << endl;
+				delete m_PlayerBullets[i]; 
+				m_PlayerBullets[i] = nullptr; 
+				m_PlayerBullets.erase(m_PlayerBullets.begin() + i); 
+				m_PlayerBullets.shrink_to_fit();
+				m_Enemies[j]->SetLife(m_Enemies[j]->GetLife() - 1);
+				break;
+			}
+		}
+
 	}
 
 	for (unsigned i = 0; i < m_Enemies.size(); i++) // For each missile.
 	{
 		// For each enemy. Well we only have one currently.
 		// eg: for (unsigned j = 0; j < g_enemies.size(); j++) where g_enemies is your enemy vector
-		if (SDL_HasIntersection(&m_Enemies[i]->m_enemyDst, &m_dst)) // Collision check. AABB.
-		{
-			cout << "Enemy Boom!" << endl;
-			Mix_PlayChannel(-1, m_pBoom, 1);
-			// Deallocate missile.
-			delete m_Enemies[i]; // Deallocates Missile through pointer.
-			m_Enemies[i] = nullptr; // Ensures no dangling pointer.
-			m_Enemies.erase(m_Enemies.begin() + i); // Erase element and resize array.
-			m_Enemies.shrink_to_fit();
-			player.SetTint(player.GetTint() - 32);
-			player.SetLife(player.GetLife() - 1);
-			break;
-		}
+		//if (SDL_HasIntersection(&m_Enemies[i]->GetDst(), &m_dst)) // Collision check. AABB.
+		//{
+		//	cout << "Enemy Boom!" << endl;
+		//	Mix_PlayChannel(-1, m_pBoom, 1);
+		//	// Deallocate missile.
+		//	delete m_Enemies[i]; // Deallocates Missile through pointer.
+		//	m_Enemies[i] = nullptr; // Ensures no dangling pointer.
+		//	m_Enemies.erase(m_Enemies.begin() + i); // Erase element and resize array.
+		//	m_Enemies.shrink_to_fit();
+		//	player.SetTint(player.GetTint() - 32);
+		//	player.SetLife(player.GetLife() - 1);
+		//	break;
+		//}
 
 		for (unsigned i = 0; i < m_PlayerBullets.size(); i++) // For each missile.
 		{
-			if (SDL_HasIntersection(&m_PlayerBullets[i]->GetDst(), &m_Enemies[0]->m_enemyDst)) // Collision check. AABB.
-			{
-				cout << "Player Bullet Boom!" << endl;
-				delete m_PlayerBullets[i]; // Deallocates Missile through pointer.
-				m_PlayerBullets[i] = nullptr; // Ensures no dangling pointer.
-				m_PlayerBullets.erase(m_PlayerBullets.begin() + i); // Erase element and resize array.
-				m_PlayerBullets.shrink_to_fit();
-				m_Enemies[i]->m_enemyLife--;
-				break;
-			}
+			//if (SDL_HasIntersection(&m_PlayerBullets[i]->GetDst(), &m_Enemies[0]->GetDst())) // Collision check. AABB.
+			//{
+			//	cout << "Player Bullet Boom!" << endl;
+			//	delete m_PlayerBullets[i]; // Deallocates Missile through pointer.
+			//	m_PlayerBullets[i] = nullptr; // Ensures no dangling pointer.
+			//	m_PlayerBullets.erase(m_PlayerBullets.begin() + i); // Erase element and resize array.
+			//	m_PlayerBullets.shrink_to_fit();
+			//	m_Enemies[i]->SetLife(m_Enemies[i]->GetLife() - 1);
+			//	break;
+			//}
 		}
 	}
 
@@ -231,63 +272,41 @@ void GameState::Update()
 	{
 		// For each enemy. Well we only have one currently.
 		// eg: for (unsigned j = 0; j < g_enemies.size(); j++) where g_enemies is your enemy vector
-		if (SDL_HasIntersection(&m_Bullets[i]->m_bulletDst, &m_dst)) // Collision check. AABB.
-		{
-			cout << "Bullet Boom!" << endl;
-			Mix_PlayChannel(-1, m_pBoom, 1);
-			// Deallocate missile.
-			delete m_Bullets[i]; // Deallocates Missile through pointer.
-			m_Bullets[i] = nullptr; // Ensures no dangling pointer.
-			m_Bullets.erase(m_Bullets.begin() + i); // Erase element and resize array.
-			m_Bullets.shrink_to_fit();
-			player.SetTint(player.GetTint() - 32);
-			player.SetLife(player.GetLife() - 1);
-			break;
-		}
+		//if (SDL_HasIntersection(&m_Bullets[i]->GetDst(), &m_dst)) // Collision check. AABB.
+		//{
+		//	cout << "Bullet Boom!" << endl;
+		//	Mix_PlayChannel(-1, m_pBoom, 1);
+		//	// Deallocate missile.
+		//	delete m_Bullets[i]; // Deallocates Missile through pointer.
+		//	m_Bullets[i] = nullptr; // Ensures no dangling pointer.
+		//	m_Bullets.erase(m_Bullets.begin() + i); // Erase element and resize array.
+		//	m_Bullets.shrink_to_fit();
+		//	player.SetTint(player.GetTint() - 32);
+		//	player.SetLife(player.GetLife() - 1);
+		//	break;
+		//}
 	}
 }
 
 void GameState::Render()
 {
-	collisionUp = { -10,-20,WIDTH + 20,20 };
-	collisionDown = { -10,HEIGHT + 50,WIDTH + 20,20 };
-	collisionLeft = { -10,-20,20,HEIGHT + 20 };
-	collisionRight = { WIDTH,-20,20,HEIGHT + 20 };
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 0, 255);
-	SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionUp);
-	SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionDown);
-	SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionLeft);
-	SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionRight);
-	SDL_RenderClear(Engine::Instance().GetRenderer());
-
-	m_bg1 = { 0, 0, 1024, 768 };
-	m_bg2 = { 1024, 0, 1024, 768 };
-	m_diedSrc = { 0, 0, 1050, 1050 };
-	m_diedDst = { 260, 100, 500, 500 };
-
+	//collisionUp = { -10,-20,WIDTH + 20,20 };
+	//collisionDown = { -10,HEIGHT + 50,WIDTH + 20,20 };
+	//collisionLeft = { -10,-20,20,HEIGHT + 20 };
+	//collisionRight = { WIDTH,-20,20,HEIGHT + 20 };
 	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 0, 255);
+	//SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionUp);
+	//SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionDown);
+	//SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionLeft);
+	//SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionRight);
 	//SDL_RenderClear(Engine::Instance().GetRenderer());
 
-	// Any drawing goes here...
+
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pBGTexture, NULL, &m_bg1);
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pBGTexture, NULL, &m_bg2);
 
 	player.Render();
 
-
-	for (unsigned i = 0; i < m_Enemies.size(); i++)
-	{
-		if (m_Enemies[i]->m_enemyLife > 0)
-		{
-			SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_pEnemyTexture, &(m_Enemies[i]->m_enemySrc), &(m_Enemies[i]->m_enemyDst), NULL, NULL, SDL_FLIP_HORIZONTAL);
-		}
-	}
-
-
-	for (unsigned i = 0; i < m_Bullets.size(); i++)
-	{
-		SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_pBulletsTexture1, &(m_Bullets[i]->m_bulletSrc), &(m_Bullets[i]->m_bulletDst), NULL, NULL, SDL_FLIP_HORIZONTAL);
-	}
 
 	if (player.GetLife() <= 0)
 	{
@@ -296,18 +315,13 @@ void GameState::Render()
 
 
 
-	//for (unsigned i = 0; i < m_turrets.size(); i++)
-	//	m_turrets[i]->Render();
-	//for (unsigned i = 0; i < s_enemies.size(); i++)
-	//	s_enemies[i]->Render();
+	for (unsigned i = 0; i < m_Bullets.size(); i++)
+		m_Bullets[i]->Render();
+	for (unsigned i = 0; i < m_Enemies.size(); i++)
+		m_Enemies[i]->Render();
 	for (unsigned i = 0; i < m_PlayerBullets.size(); i++)
 		m_PlayerBullets[i]->Render();
 
-	//SDL_Rect spawnBox = { 50, 618, 100, 100 };
-	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 255, 255, 255, 255);
-	//SDL_RenderDrawRect(Engine::Instance().GetRenderer(), &spawnBox);
-
-	// This code below prevents SDL_RenderPresent from running twice in one frame.
 	if (dynamic_cast<GameState*>(STMA::GetStates().back())) // If current state is GameState.
 		State::Render();
 
@@ -342,7 +356,7 @@ void GameState::Exit()
 
 	//SDL_DestroyTexture(player.GetTexture());
 	SDL_DestroyTexture(m_pBGTexture);
-	SDL_DestroyTexture(m_pEnemyTexture);
+	//SDL_DestroyTexture(m_pEnemyTexture);
 	SDL_DestroyTexture(m_pBulletsTexture1);
 	//SDL_DestroyTexture(m_PlayerBullets.);
 	SDL_DestroyTexture(m_pDiedTexture);

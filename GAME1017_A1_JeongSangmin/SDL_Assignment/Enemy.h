@@ -18,14 +18,28 @@ using namespace std;
 class Enemy
 {
 private:
-	
+	SDL_Rect m_dst;
+	SDL_Rect m_src;
+
+	SDL_Texture* m_pEnemyTexture;
+
+	int m_life;
+	int m_tint;
 
 public:
-	SDL_Rect m_enemySrc;
-	SDL_Rect m_enemyDst;
-	int m_enemyLife;
-	Enemy(int = 0, int = 0, int = 0);
+	Enemy(SDL_Rect d);
 	void Update();
+	void Render();
+	SDL_Rect& GetDst() { return m_dst; }
+	SDL_Rect& GetSrc() { return m_src; }
+	SDL_Texture* GetTexture() const { return m_pEnemyTexture; }
+	int GetLife() { return m_life; }
+	int GetTint() { return m_tint; }
+
+	void SetLife(int l) { m_life = l; }
+	void SetTexture(SDL_Texture* t) { m_pEnemyTexture = t; }
+	void SetDst(SDL_Rect d) { m_dst = d; }
+	void SetTint(int t) { m_tint = t; }
 };
 #endif
 

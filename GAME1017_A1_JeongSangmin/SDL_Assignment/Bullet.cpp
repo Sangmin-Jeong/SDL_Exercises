@@ -1,12 +1,18 @@
 #include "Bullet.h"
+#include "Engine.h"
 
-Bullet::Bullet(int x, int y)
+Bullet::Bullet(SDL_Rect d)
 {
-	m_bulletSrc = { 0, 0, 19, 6 };
-	m_bulletDst = { x, y, 65, 27 };
+	m_src = { 0, 0, 19, 6 };
+	m_dst = { d.x, (d.y+40), 65, 27 };
 }
 
 void Bullet::Update()
 {
-	m_bulletDst.x -= 3;
+	m_dst.x -= 3;
+}
+
+void Bullet::Render()
+{
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_pBulletsTexture1, &m_src, &m_dst, NULL, NULL, SDL_FLIP_HORIZONTAL);
 }

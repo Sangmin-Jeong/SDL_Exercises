@@ -45,19 +45,6 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 	/*m_fps = (Uint32)round(1 / (double)FPS) * 1000;*/
 	m_fps = 200 / FPS;
 	m_keystates = SDL_GetKeyboardState(nullptr);
-	//m_player = { WIDTH / 2, HEIGHT / 2, 35, 55 };
-
-	//m_Enemies.reserve(7); //capacity = 7 , size = 0
-	//m_Bullets.reserve(7); //capacity = 7 , size = 0
-	//m_PlayerBullets.reserve(7);
-
-
-	//cout << m_Enemies.size() << endl;
-	//cout << m_Bullets.size() << endl;
-	//cout << m_PlayerBullets.size() << endl;
-
-	
-
 
 
 	Mix_VolumeMusic(16); // 0~128  , single channel
@@ -78,7 +65,7 @@ void Engine::HandleEvents()
 // Update function. Moves objects, performs physics, e.g. projectiles, gravity, collisions.
 void Engine::Update()
 {
-	cout << "Updating game..." << endl;
+	//cout << "Updating game..." << endl;
 	STMA::Update();
 }
 
@@ -91,7 +78,7 @@ Engine& Engine::Instance()
 // Render function. Renders changes in game objects to window.
 void Engine::Render()
 {
-	cout << "Rendering changes to window..." << endl;
+	//cout << "Rendering changes to window..." << endl;
 	STMA::Render();
 }
 

@@ -18,7 +18,6 @@ void Player::Update()
 void Player::Render()
 {
 	SDL_SetTextureColorMod(m_pPlayerTexture, 255, m_tint, m_tint);
-	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pPlayerTexture, &m_src, &m_dst);
 	if (GetLife() > 0)
 	{
 		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pPlayerTexture, &m_src, &m_dst);

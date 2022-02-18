@@ -18,13 +18,21 @@ using namespace std;
 class Bullet
 {
 private:
+	SDL_Rect m_dst;
+	SDL_Rect m_src;
+
+	SDL_Texture* m_pBulletsTexture1;
 
 public:
-
-	SDL_Rect m_bulletDst;
-	SDL_Rect m_bulletSrc;
-	Bullet(int = 0, int = 0);
+	Bullet(SDL_Rect d);
 	void Update();
+	void Render();
+	SDL_Rect& GetDst() { return m_dst; }
+	SDL_Rect& GetSrc() { return m_src; }
+	SDL_Texture* GetTexture() const { return m_pBulletsTexture1; }
+
+	void SetTexture(SDL_Texture* t) { m_pBulletsTexture1 = t; }
+
 };
 #endif
 

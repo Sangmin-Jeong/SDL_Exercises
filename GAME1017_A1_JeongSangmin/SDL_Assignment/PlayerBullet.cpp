@@ -7,7 +7,7 @@
 PlayerBullet::PlayerBullet(SDL_Rect d)
 {
 	m_src = { 0, 0, 19, 6 };
-	m_dst = { d.x, d.y, 65, 27};
+	m_dst = { d.x, (d.y+40), 65, 27};
 }
 
 void PlayerBullet::Update()
