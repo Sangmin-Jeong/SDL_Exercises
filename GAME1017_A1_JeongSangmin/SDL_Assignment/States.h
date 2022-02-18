@@ -1,9 +1,15 @@
 #pragma once
 #ifndef _STATES_H_
 #define _STATES_H_
+#include <SDL_mixer.h>
+
 #include "Enemy.h"
 #include <vector>
 #include <string>
+
+#include "Bullet.h"
+#include "Player.h"
+#include "PlayerBullet.h"
 
 using namespace std;
 
@@ -67,5 +73,38 @@ public: // Public methods.
 	SDL_Texture* p_cDown;
 	SDL_Texture* p_cLeft;
 	SDL_Texture* p_cRight;
+
+	SDL_Texture* m_pBGTexture;
+	SDL_Texture* m_pEnemyTexture;
+	SDL_Texture* m_pBulletsTexture1;
+
+	SDL_Texture* m_pDiedTexture; // for end state
+
+	SDL_Rect m_dst;
+	SDL_Rect m_bg1, m_bg2;
+	SDL_Rect m_diedSrc;
+	SDL_Rect m_diedDst;
+
+	vector<Bullet*> m_Bullets;
+	vector<Enemy*> m_Enemies;
+	vector<PlayerBullet*> m_PlayerBullets;
+	Player player;
+
+	int m_enemyCtr = 0;
+	int m_enemyMax = 300; // 180 frames = 3 seconds.
+
+	int m_bulletCtr = 0;
+	int m_bulletMax = 300;
+
+	int randomX, randomY;
+
+	Mix_Chunk* m_pBoom;
+	Mix_Chunk* m_pPlayerBullet;
+	Mix_Chunk* m_pEnemyBullet;
+
+	Mix_Music* m_pMusic;
+	Mix_Music* m_pBGM;
+
+
 };
 #endif

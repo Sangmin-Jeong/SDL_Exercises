@@ -2,19 +2,20 @@
 #include "Engine.h"
 #include "MathManager.h"
 #include "States.h"
+#include "Player.h"
 
-PlayerBullet::PlayerBullet(int x, int y)
+PlayerBullet::PlayerBullet(SDL_Rect d)
 {
-	m_playerBulletSrc = { 0, 0, 19, 6 };
-	m_playerBulletDst = { x, y, 65, 27 };
+	m_src = { 0, 0, 19, 6 };
+	m_dst = { d.x, d.y, 65, 27};
 }
 
 void PlayerBullet::Update()
 {
-	m_playerBulletDst.x += 3;
+	m_dst.x += 3;
 }
 
 void PlayerBullet::Render()
 {
-	
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pPlayerBulletTexture, &m_src, &m_dst);
 }

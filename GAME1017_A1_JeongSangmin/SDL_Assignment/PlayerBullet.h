@@ -18,13 +18,21 @@ using namespace std;
 class PlayerBullet
 {
 private:
-	SDL_Rect m_playerBulletDst;
-	SDL_Rect m_playerBulletSrc;
-public:
+	SDL_Rect m_dst;
+	SDL_Rect m_src;
 
-	void getbulletDst();
-	PlayerBullet(int = 0, int = 0);
+	SDL_Texture* m_pPlayerBulletTexture;
+
+public:
+	PlayerBullet(SDL_Rect d);
 	void Update();
+	void Render();
+	SDL_Rect& GetDst() { return m_dst; }
+	SDL_Rect& GetSrc() { return m_src; }
+	SDL_Texture* GetTexture() const { return m_pPlayerBulletTexture; }
+
+	void SetTexture(SDL_Texture* t) { m_pPlayerBulletTexture = t; }
+
 };
 #endif
 

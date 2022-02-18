@@ -1,7 +1,5 @@
-﻿  Bullet.cpp
-  Enemy.cpp
-  Engine.cpp
-  Main.cpp
-  PlayerBullet.cpp
+﻿  PlayerBullet.cpp
+  States.cpp
+  TextureManager.cpp
   Generating Code...
   SDL_Assignment.vcxproj -> C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\GAME1017_A1_JeongSangmin\Debug\SDL_Assignment.exe

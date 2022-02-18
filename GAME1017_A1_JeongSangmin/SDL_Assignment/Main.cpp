@@ -12,15 +12,8 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #include "Engine.h"
-#include "Enemy.h"
-#include "Bullet.h"
-#include "PlayerBullet.h"
 
 int main(int argc, char* argv[])
 {
-	PlayerBullet pb;
-	Bullet bul;
-	Enemy en;
-	Engine game;
-	return game.Run();
+	return Engine::Instance().Run();
 }
