@@ -20,7 +20,8 @@ TitleState::TitleState() {}
 void TitleState::Enter()
 {
 	m_pTitleTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "title.png");
-
+	m_pTitleTexture2 = IMG_LoadTexture(Engine::Instance().GetRenderer(), "title2.png");
+	m_titleDst = {416,581,195,100};
 	m_pTitleMusic = Mix_LoadMUS("aud/titleBGM.mp3");
 
 	Mix_PlayMusic(m_pTitleMusic, -1);
@@ -33,13 +34,30 @@ void TitleState::Update()
 
 		STMA::ChangeState(new GameState());
 	}
+
+	if (CollisionManager::PointAABBCheck(EVMA::GetMousePos(), m_titleDst))
+	{
+		if(EVMA::MousePressed(1))
+		{
+			STMA::ChangeState(new GameState());
+		}
+	}
 }
 
 void TitleState::Render()
 {
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 0, 255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
-	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pTitleTexture, NULL, NULL);
+	if (CollisionManager::PointAABBCheck(EVMA::GetMousePos(), m_titleDst))
+	{
+		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pTitleTexture2, NULL, NULL);
+
+	}
+	else
+	{
+		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pTitleTexture, NULL, NULL);
+	}
+
 	State::Render();
 }
 
@@ -326,7 +344,9 @@ LoseState::LoseState() { }
 void LoseState::Enter()
 {
 	m_pLoseTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "lose.png");
+	m_pLoseTexture2 = IMG_LoadTexture(Engine::Instance().GetRenderer(), "lose2.png");
 	m_pLoseMusic = Mix_LoadMUS("aud/loseBGM.mp3");
+	m_loseDst = { 416,581,195,100 };
 	Mix_PlayMusic(m_pLoseMusic, -1);
 }
 
@@ -336,13 +356,29 @@ void LoseState::Update()
 	{
 		STMA::ChangeState(new TitleState());
 	}
+
+	if (CollisionManager::PointAABBCheck(EVMA::GetMousePos(), m_loseDst))
+	{
+		if (EVMA::MousePressed(1))
+		{
+			STMA::ChangeState(new TitleState());
+		}
+	}
 }
 
 void LoseState::Render()
 {
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 150, 150, 0, 255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
-	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pLoseTexture, NULL, NULL);
+	if (CollisionManager::PointAABBCheck(EVMA::GetMousePos(), m_loseDst))
+	{
+		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pLoseTexture2, NULL, NULL);
+
+	}
+	else
+	{
+		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pLoseTexture, NULL, NULL);
+	}
 	State::Render();
 }
 

@@ -32,6 +32,9 @@ private: // Private properties.
 	Mix_Music* m_pTitleMusic;
 
 	SDL_Texture* m_pTitleTexture;
+	SDL_Texture* m_pTitleTexture2;
+
+	SDL_Rect m_titleDst;
 
 public: // Public methods.
 	TitleState();
@@ -102,6 +105,9 @@ private: // Private properties.
 	Mix_Music* m_pLoseMusic;
 
 	SDL_Texture* m_pLoseTexture;
+	SDL_Texture* m_pLoseTexture2;
+
+	SDL_Rect m_loseDst;
 public: // Public methods.
 	LoseState();
 	virtual void Enter();
