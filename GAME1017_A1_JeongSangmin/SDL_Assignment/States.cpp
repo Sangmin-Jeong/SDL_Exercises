@@ -19,7 +19,11 @@ TitleState::TitleState() {}
 
 void TitleState::Enter()
 {
+	m_pTitleTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "title.png");
 
+	m_pTitleMusic = Mix_LoadMUS("aud/titleBGM.mp3");
+
+	Mix_PlayMusic(m_pTitleMusic, -1);
 }
 
 void TitleState::Update()
@@ -33,14 +37,17 @@ void TitleState::Update()
 
 void TitleState::Render()
 {
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 255, 255);
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 0, 255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pTitleTexture, NULL, NULL);
 	State::Render();
 }
 
 void TitleState::Exit()
 {
-
+	STMA::PopState();
+	SDL_DestroyTexture(m_pTitleTexture);
+	Mix_FreeMusic(m_pTitleMusic);
 }
 
 PauseState::PauseState() {}
@@ -235,73 +242,16 @@ void GameState::Update()
 
 	}
 
-	for (unsigned i = 0; i < m_Enemies.size(); i++) // For each missile.
+	/* Checking player's life*/
+	if (player.GetLife() <= 0)
 	{
-		// For each enemy. Well we only have one currently.
-		// eg: for (unsigned j = 0; j < g_enemies.size(); j++) where g_enemies is your enemy vector
-		//if (SDL_HasIntersection(&m_Enemies[i]->GetDst(), &m_dst)) // Collision check. AABB.
-		//{
-		//	cout << "Enemy Boom!" << endl;
-		//	Mix_PlayChannel(-1, m_pBoom, 1);
-		//	// Deallocate missile.
-		//	delete m_Enemies[i]; // Deallocates Missile through pointer.
-		//	m_Enemies[i] = nullptr; // Ensures no dangling pointer.
-		//	m_Enemies.erase(m_Enemies.begin() + i); // Erase element and resize array.
-		//	m_Enemies.shrink_to_fit();
-		//	player.SetTint(player.GetTint() - 32);
-		//	player.SetLife(player.GetLife() - 1);
-		//	break;
-		//}
-
-		for (unsigned i = 0; i < m_PlayerBullets.size(); i++) // For each missile.
-		{
-			//if (SDL_HasIntersection(&m_PlayerBullets[i]->GetDst(), &m_Enemies[0]->GetDst())) // Collision check. AABB.
-			//{
-			//	cout << "Player Bullet Boom!" << endl;
-			//	delete m_PlayerBullets[i]; // Deallocates Missile through pointer.
-			//	m_PlayerBullets[i] = nullptr; // Ensures no dangling pointer.
-			//	m_PlayerBullets.erase(m_PlayerBullets.begin() + i); // Erase element and resize array.
-			//	m_PlayerBullets.shrink_to_fit();
-			//	m_Enemies[i]->SetLife(m_Enemies[i]->GetLife() - 1);
-			//	break;
-			//}
-		}
+		STMA::ChangeState(new LoseState());
 	}
-
-	for (unsigned i = 0; i < m_Bullets.size(); i++) // For each missile.
-	{
-		// For each enemy. Well we only have one currently.
-		// eg: for (unsigned j = 0; j < g_enemies.size(); j++) where g_enemies is your enemy vector
-		//if (SDL_HasIntersection(&m_Bullets[i]->GetDst(), &m_dst)) // Collision check. AABB.
-		//{
-		//	cout << "Bullet Boom!" << endl;
-		//	Mix_PlayChannel(-1, m_pBoom, 1);
-		//	// Deallocate missile.
-		//	delete m_Bullets[i]; // Deallocates Missile through pointer.
-		//	m_Bullets[i] = nullptr; // Ensures no dangling pointer.
-		//	m_Bullets.erase(m_Bullets.begin() + i); // Erase element and resize array.
-		//	m_Bullets.shrink_to_fit();
-		//	player.SetTint(player.GetTint() - 32);
-		//	player.SetLife(player.GetLife() - 1);
-		//	break;
-		//}
-	}
+	
 }
 
 void GameState::Render()
 {
-	//collisionUp = { -10,-20,WIDTH + 20,20 };
-	//collisionDown = { -10,HEIGHT + 50,WIDTH + 20,20 };
-	//collisionLeft = { -10,-20,20,HEIGHT + 20 };
-	//collisionRight = { WIDTH,-20,20,HEIGHT + 20 };
-	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 0, 255);
-	//SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionUp);
-	//SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionDown);
-	//SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionLeft);
-	//SDL_RenderDrawRectF(Engine::Instance().GetRenderer(), &collisionRight);
-	//SDL_RenderClear(Engine::Instance().GetRenderer());
-
-
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pBGTexture, NULL, &m_bg1);
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pBGTexture, NULL, &m_bg2);
 
@@ -332,33 +282,30 @@ void GameState::Exit()
 {
 	for (unsigned i = 0; i < m_Enemies.size(); i++)
 	{
-		delete m_Enemies[i]; // Deallocates Missile through pointer.
-		m_Enemies[i] = nullptr; // Ensures no dangling pointer.
+		delete m_Enemies[i]; 
+		m_Enemies[i] = nullptr; 
 	}
-	m_Enemies.clear(); // Removes all elements. Size = 0.
-	m_Enemies.shrink_to_fit(); // Sets capacity to size.
+	m_Enemies.clear();
+	m_Enemies.shrink_to_fit(); 
 
 	for (unsigned i = 0; i < m_Bullets.size(); i++)
 	{
-		delete m_Bullets[i]; // Deallocates Missile through pointer.
-		m_Bullets[i] = nullptr; // Ensures no dangling pointer.
+		delete m_Bullets[i]; 
+		m_Bullets[i] = nullptr; 
 	}
-	m_Bullets.clear(); // Removes all elements. Size = 0.
-	m_Bullets.shrink_to_fit(); // Sets capacity to size.
+	m_Bullets.clear(); 
+	m_Bullets.shrink_to_fit(); 
 
 	for (unsigned i = 0; i < m_PlayerBullets.size(); i++)
 	{
-		delete m_PlayerBullets[i]; // Deallocates Missile through pointer.
-		m_PlayerBullets[i] = nullptr; // Ensures no dangling pointer.
+		delete m_PlayerBullets[i]; 
+		m_PlayerBullets[i] = nullptr; 
 	}
-	m_PlayerBullets.clear(); // Removes all elements. Size = 0.
+	m_PlayerBullets.clear(); 
 	m_PlayerBullets.shrink_to_fit();
 
-	//SDL_DestroyTexture(player.GetTexture());
 	SDL_DestroyTexture(m_pBGTexture);
-	//SDL_DestroyTexture(m_pEnemyTexture);
 	SDL_DestroyTexture(m_pBulletsTexture1);
-	//SDL_DestroyTexture(m_PlayerBullets.);
 	SDL_DestroyTexture(m_pDiedTexture);
 
 	Mix_FreeChunk(m_pBoom);
@@ -366,13 +313,7 @@ void GameState::Exit()
 	Mix_FreeChunk(m_pEnemyBullet);
 	Mix_FreeMusic(m_pBGM);
 	Mix_FreeMusic(m_pMusic);
-
-	Mix_CloseAudio();
-	Mix_Quit();
-
-	IMG_Quit();
-	SDL_Quit();
-
+	
 }
 
 void GameState::Resume()
@@ -380,5 +321,33 @@ void GameState::Resume()
 
 }
 
-//std::vector<Bullet*> GameState::s_bullets;
-//std::vector<Enemy*> GameState::s_enemies;
+LoseState::LoseState() { }
+
+void LoseState::Enter()
+{
+	m_pLoseTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "lose.png");
+	m_pLoseMusic = Mix_LoadMUS("aud/loseBGM.mp3");
+	Mix_PlayMusic(m_pLoseMusic, -1);
+}
+
+void LoseState::Update()
+{
+	if (EVMA::KeyPressed(SDL_SCANCODE_R))
+	{
+		STMA::ChangeState(new TitleState());
+	}
+}
+
+void LoseState::Render()
+{
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 0, 255);
+	SDL_RenderClear(Engine::Instance().GetRenderer());
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pLoseTexture, NULL, NULL);
+	State::Render();
+}
+
+void LoseState::Exit()
+{
+	SDL_DestroyTexture(m_pLoseTexture);
+	Mix_FreeMusic(m_pLoseMusic);
+}

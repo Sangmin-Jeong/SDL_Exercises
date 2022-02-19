@@ -29,6 +29,10 @@ public:
 class TitleState : public State
 {
 private: // Private properties.
+	Mix_Music* m_pTitleMusic;
+
+	SDL_Texture* m_pTitleTexture;
+
 public: // Public methods.
 	TitleState();
 	virtual void Enter();
@@ -39,6 +43,8 @@ public: // Public methods.
 
 class PauseState : public State
 {
+private:
+
 public: // Public methods.
 	PauseState();
 	virtual void Enter();
@@ -50,8 +56,6 @@ public: // Public methods.
 class GameState : public State
 {
 private:
-	//static std::vector<Enemy*> s_enemies;
-	//static std::vector<Bullet*> s_bullets;
 	int m_spawnCtr;
 
 public: // Public methods.
@@ -61,23 +65,10 @@ public: // Public methods.
 	virtual void Render();
 	virtual void Exit();
 	virtual void Resume();
-	//static std::vector<Bullet*>& Bullets() { return s_bullets; }
-	/*static std::vector<Enemy*>& Enemies() { return s_enemies; }*/
-
-	//SDL_FRect collisionUp;
-	//SDL_FRect collisionDown;
-	//SDL_FRect collisionLeft;
-	//SDL_FRect collisionRight;
-
-	//SDL_Texture* p_cUp;
-	//SDL_Texture* p_cDown;
-	//SDL_Texture* p_cLeft;
-	//SDL_Texture* p_cRight;
 
 	SDL_Texture* m_pBGTexture;
 	SDL_Texture* m_pBulletsTexture1;
-
-	SDL_Texture* m_pDiedTexture; // for end state
+	SDL_Texture* m_pDiedTexture;
 
 	SDL_Rect m_dst;
 	SDL_Rect m_bg1, m_bg2;
@@ -103,5 +94,19 @@ public: // Public methods.
 	Mix_Music* m_pBGM;
 
 
+};
+
+class LoseState : public State
+{
+private: // Private properties.
+	Mix_Music* m_pLoseMusic;
+
+	SDL_Texture* m_pLoseTexture;
+public: // Public methods.
+	LoseState();
+	virtual void Enter();
+	virtual void Update();
+	virtual void Render();
+	virtual void Exit();
 };
 #endif

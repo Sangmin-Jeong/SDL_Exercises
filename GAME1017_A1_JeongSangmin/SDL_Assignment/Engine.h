@@ -2,6 +2,7 @@
 #ifndef _ENGINE_H_
 #define _ENGINE_H_
 
+#include "../../include/GLM/glm/glm.hpp"
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
@@ -47,21 +48,5 @@ public:
 	SDL_Renderer* GetRenderer() { return m_pRenderer; }
 	bool& Running() { return m_running; }
 	int Run();
-
-
-
-
-	//vector<SDL_Rect*> m_spawn;
-
-	//Enemy en;
-	//Bullet bul;
-
-
-
-
-	//int m_playerBulletCtr = 0;
-	//int m_playerBulletMax = 300;
-
-
 };
 #endif

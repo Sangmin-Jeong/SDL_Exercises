@@ -88,9 +88,16 @@ void Engine::Clean()
 	cout << "Cleaning up..." << endl;
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
+
 	EVMA::Quit();
 	STMA::Quit();
 	TEMA::Quit();
+
+	Mix_CloseAudio();
+	Mix_Quit();
+
+	IMG_Quit();
+	SDL_Quit();
 }
 
 void Engine::Wake()
