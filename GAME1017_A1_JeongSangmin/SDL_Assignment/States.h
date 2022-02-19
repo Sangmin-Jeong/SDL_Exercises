@@ -47,7 +47,10 @@ public: // Public methods.
 class PauseState : public State
 {
 private:
+	SDL_Texture* m_pPauseTexture;
+	SDL_Texture* m_pPauseTexture2;
 
+	SDL_Rect m_pauseDst;
 public: // Public methods.
 	PauseState();
 	virtual void Enter();
@@ -72,6 +75,7 @@ public: // Public methods.
 	SDL_Texture* m_pBGTexture;
 	SDL_Texture* m_pBulletsTexture1;
 	SDL_Texture* m_pDiedTexture;
+	SDL_Texture* m_pInstructionTexture;
 
 	SDL_Rect m_dst;
 	SDL_Rect m_bg1, m_bg2;

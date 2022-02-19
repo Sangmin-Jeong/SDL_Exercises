@@ -72,30 +72,50 @@ PauseState::PauseState() {}
 
 void PauseState::Enter()
 {
-
+	if (Mix_PlayingMusic())
+		Mix_PauseMusic();
+	m_pPauseTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "pause.png");
+	m_pPauseTexture2 = IMG_LoadTexture(Engine::Instance().GetRenderer(), "pause2.png");
+	m_pauseDst = { 464,513,94,64 };
 }
 
 void PauseState::Update()
 {
 	if (EVMA::KeyPressed(SDL_SCANCODE_R))
+	{
 		STMA::PopState();
+	}
+	//cout << EVMA::GetMousePos().x << "  " << EVMA::GetMousePos().y << endl;
+	if (CollisionManager::PointAABBCheck(EVMA::GetMousePos(), m_pauseDst))
+	{
+		if (EVMA::MousePressed(1))
+		{
+			STMA::PopState();
+		}
+	}
 }
 
 void PauseState::Render()
 {
-	// First render the GameState.
-	STMA::GetStates().front()->Render();
-	// Now render the rest of PauseState.
 	SDL_SetRenderDrawBlendMode(Engine::Instance().GetRenderer(), SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 255, 255, 128);
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 150, 150, 250, 128);
 	SDL_Rect rect = { 255, 128, 512, 512 };
 	SDL_RenderFillRect(Engine::Instance().GetRenderer(), &rect);
+	if (CollisionManager::PointAABBCheck(EVMA::GetMousePos(), m_pauseDst))
+	{
+		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pPauseTexture2, NULL, &rect);
+	}
+	else
+	{
+		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pPauseTexture, NULL, &rect);
+	}
 	State::Render();
 }
 
 void PauseState::Exit()
 {
-
+	if (Mix_PausedMusic())
+		Mix_ResumeMusic();
 }
 
 GameState::GameState() :m_spawnCtr(0) {}
@@ -105,6 +125,7 @@ void GameState::Enter()
 	player.SetTexture(IMG_LoadTexture(Engine::Instance().GetRenderer(), "Player.png"));
 	m_pBGTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Background.png");
 	m_pDiedTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Died.png");
+	m_pInstructionTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "instruction.png");
 
 	m_pBoom = Mix_LoadWAV("aud/boom.wav");
 	m_pPlayerBullet = Mix_LoadWAV("aud/death1.wav");
@@ -272,7 +293,8 @@ void GameState::Render()
 {
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pBGTexture, NULL, &m_bg1);
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pBGTexture, NULL, &m_bg2);
-
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pInstructionTexture, NULL, NULL);
+	
 	player.Render();
 
 
@@ -325,7 +347,7 @@ void GameState::Exit()
 	SDL_DestroyTexture(m_pBGTexture);
 	SDL_DestroyTexture(m_pBulletsTexture1);
 	SDL_DestroyTexture(m_pDiedTexture);
-
+	SDL_DestroyTexture(m_pInstructionTexture);
 	Mix_FreeChunk(m_pBoom);
 	Mix_FreeChunk(m_pPlayerBullet);
 	Mix_FreeChunk(m_pEnemyBullet);
