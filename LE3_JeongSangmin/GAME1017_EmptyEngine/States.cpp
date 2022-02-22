@@ -206,12 +206,14 @@ void GameState::Update()
 					ast->Setlife(ast->Getlife() - 1);
 					m_chunks.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f,ast->GetDst()->h * 0.66f }));
 					m_chunks.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
-					m_chunks.back()->SetAngle(bul->GetAngle() - 45.0);
+				/*	cout << bul->GetAngle() << "  " << MAMA::Deg2Rad(bul->GetAngle()) << endl;*/
+					MAMA::SetDeltas(MAMA::Deg2Rad(bul->GetAngle()-100), m_chunks.back()->GetDX(), m_chunks.back()->GetDY(), 2.0f, 2.0f);
+				/*	cout << m_chunks.back()->GetDX() << "  " << m_chunks.back()->GetDY() << endl;*/
 					m_chunks.back()->Update();
 
 					m_chunks.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f,ast->GetDst()->h * 0.66f }));
 					m_chunks.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
-					m_chunks.back()->SetAngle(bul->GetAngle() + 45.0);
+					MAMA::SetDeltas(MAMA::Deg2Rad(bul->GetAngle()-135), m_chunks.back()->GetDX(), m_chunks.back()->GetDY(), 2.0f, 2.0f);
 					m_chunks.back()->Update();
 
 					// You would only need to spawn two chunks if the asteroid that is hit is full size or one smaller than full.
@@ -243,12 +245,12 @@ void GameState::Update()
 					ast->Setlife(ast->Getlife() - 1);
 					m_chunks2.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f, ast->GetDst()->h * 0.66f }));
 					m_chunks2.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
-					m_chunks2.back()->SetAngle(-bul->GetAngle() - (45.0));
-
+					MAMA::SetDeltas(MAMA::Deg2Rad(bul->GetAngle() - 100), m_chunks2.back()->GetDX(), m_chunks2.back()->GetDY(), 2.0f, 2.0f);
 					m_chunks2.back()->Update();
+
 					m_chunks2.push_back(new Asteroid({ 539,0,61,66 }, { ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f,ast->GetDst()->h * 0.66f }));
 					m_chunks2.back()->SetColMods(ast->GetRMod(), ast->GetGMod(), ast->GetBMod());
-					m_chunks2.back()->SetAngle(-bul->GetAngle() + (45.0));
+					MAMA::SetDeltas(MAMA::Deg2Rad(bul->GetAngle() - 135), m_chunks2.back()->GetDX(), m_chunks2.back()->GetDY(), 2.0f, 2.0f);
 					m_chunks2.back()->Update();
 
 					delete bul;
