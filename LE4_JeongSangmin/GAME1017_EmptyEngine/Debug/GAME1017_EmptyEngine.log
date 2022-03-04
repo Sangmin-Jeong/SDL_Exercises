@@ -1,6 +1,4 @@
-﻿  Button3.cpp
-  Engine.cpp
-  StateManager.cpp
+﻿  PlatformPlayer.cpp
   States.cpp
   TiledLevel.cpp
   Generating Code...

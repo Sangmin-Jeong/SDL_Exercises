@@ -24,7 +24,7 @@ public:
 	void SetX(float x);
 	void SetY(float y);
 	void SetGrounded(bool g);
-	void IsGrounded();
+	bool IsGrounded();
 	double GetVelX();
 	double GetVelY();
 
