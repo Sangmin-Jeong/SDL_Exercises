@@ -4,12 +4,14 @@
 #include <cmath>
 
 PlatformPlayer::PlatformPlayer(SDL_Rect s, SDL_FRect d): AnimatedSpriteObject(s,d),
-m_state(STATE_JUMPING), m_isGrounded(false), m_isFacingLeft(false),
+m_state(STATE_IDLING), m_isGrounded(false), m_isFacingLeft(false),
 m_maxVelX(9.0), m_maxVelY(JUMPFORCE), m_grav(GRAVITY), m_drag(0.85)
 {
+	m_src = { 0,0,128,128 };
 	m_accelX = m_accelY = m_velX = m_velY = 0.0;
+	TextureManager::Load("Img/Player.png", "player");
 	// HINT! SetAnimation(?, ?, ?, ?(0 or 256 or 512, using which sprites )); Initialize jump animation
-
+	SetAnimation(12, 0, 0, 512);
 }
 
 void PlatformPlayer::Update()
@@ -18,10 +20,15 @@ void PlatformPlayer::Update()
 	{
 	case STATE_IDLING:
 		// Transition to run
-		if (EVMA::KeyPressed(SDL_SCANCODE_A) || EVMA::KeyPressed(SDL_SCANCODE_D))
+		if (EVMA::KeyPressed(SDL_SCANCODE_A))
 		{
 			m_state = STATE_RUNNING;
-			// HINT! SetAnimation(?, ?, ?, ?);
+			SetAnimation(12, 1, 8, 512);
+		}
+		else if (EVMA::KeyPressed(SDL_SCANCODE_D))
+		{
+			m_state = STATE_RUNNING;
+			SetAnimation(12, 1, 8, 512);
 		}
 		// Transition to jump
 		else if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && m_isGrounded)
@@ -29,32 +36,35 @@ void PlatformPlayer::Update()
 			m_accelY = -JUMPFORCE;
 			m_isGrounded = false;
 			m_state = STATE_JUMPING;
-			// HINT! SetAnimation(?, ?, ?, ?);
+			SetAnimation(12, 8, 9, 512);
 		}
 		break;
 	case STATE_RUNNING:
 		// Move on ground
-		if (EVMA::KeyHeld(SDL_SCANCODE_A)) // && m_dst.x > 0)
+		if (EVMA::KeyHeld(SDL_SCANCODE_A) && m_dst.x > 40)
 		{
 			m_accelX = -1.5;
 			if (!m_isFacingLeft)
 			{
 				m_isFacingLeft = true;
+				SetAnimation(12, 1, 9, 512);
+				
 			}
 		}
-		else if (EVMA::KeyHeld(SDL_SCANCODE_D)) // && m_dst.x < WIDTH - m_dst.w)
+		else if (EVMA::KeyHeld(SDL_SCANCODE_D) && m_dst.x < WIDTH - (m_dst.w + 40))
 		{
 			m_accelX = 1.5;
 			if (m_isFacingLeft)
 			{
 				m_isFacingLeft = false;
+				SetAnimation(12, 1, 9, 512);
 			}
 		}
 		// Transition to idle
 		if (!EVMA::KeyHeld(SDL_SCANCODE_A) && !EVMA::KeyHeld(SDL_SCANCODE_D))
 		{
 			m_state = STATE_IDLING;
-			// HINT! SetAnimation(?, ?, ?, ?);
+			SetAnimation(12, 0, 0, 512);
 		}
 		// Transition to jump
 		else if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && m_isGrounded)
@@ -62,12 +72,12 @@ void PlatformPlayer::Update()
 			m_accelY = -JUMPFORCE;
 			m_isGrounded = false;
 			m_state = STATE_JUMPING;
-			// HINT! SetAnimation(?, ?, ?, ?);
+			SetAnimation(12, 8, 9, 512);
 		}
 		break;
 	case STATE_JUMPING:
 		// Move in mid-air
-		if (EVMA::KeyHeld(SDL_SCANCODE_A)) // && m_dst.x > 0)
+		if (EVMA::KeyHeld(SDL_SCANCODE_A) && m_dst.x > 0)
 		{
 			m_accelX = -1.5;
 			if (!m_isFacingLeft)
@@ -76,7 +86,7 @@ void PlatformPlayer::Update()
 			}
 			
 		}
-		else if(EVMA::KeyHeld(SDL_SCANCODE_D)) // && m_dst.x < WIDTH - m_dst.w)
+		else if(EVMA::KeyHeld(SDL_SCANCODE_D) && m_dst.x < WIDTH - (m_dst.w + 40))
 		{
 			m_accelX = 1.5;
 			if (m_isFacingLeft)
@@ -88,7 +98,8 @@ void PlatformPlayer::Update()
 		if (m_isGrounded)
 		{
 			m_state = STATE_RUNNING; // Doesn't matter if this is Running or Idle
-			// HINT! SetAnimation(?, ?, ?, ?);
+			SetAnimation(12, 0, 8, 512);
+			
 		}
 		break;
 	}
@@ -105,7 +116,7 @@ void PlatformPlayer::Update()
 	m_dst.y += (float)m_velY;
 
 	m_accelX = m_accelY = 0.0; // We want to move once when we press the key
-	// Animate();
+	 Animate();
 }
 
 void PlatformPlayer::Render()
@@ -113,8 +124,19 @@ void PlatformPlayer::Render()
 	// HINT! to animate the sprite, use SDL_RenderCopyExF() and I will have to access the TextureManager
 	// and pass in a key such as "player"
 	// But for this part, we are just going to use a colored square
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 255, 0, 0, 255);
-	SDL_RenderFillRectF(Engine::Instance().GetRenderer(), &m_dst);
+	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 255, 0, 0, 255);
+	//SDL_RenderFillRectF(Engine::Instance().GetRenderer(), &m_dst);
+	SDL_RendererFlip temp;
+	if (m_isFacingLeft == 0)
+	{
+		temp = SDL_FLIP_NONE;
+	}
+	else
+	{
+		temp = SDL_FLIP_HORIZONTAL;
+	}
+	SDL_RenderCopyExF(Engine::Instance().GetRenderer(), TEMA::GetTexture("player"), &m_src, &m_dst, 0, 0, temp);
+	SDL_RenderPresent(Engine::Instance().GetRenderer());
 }
 
 void PlatformPlayer::Stop()
