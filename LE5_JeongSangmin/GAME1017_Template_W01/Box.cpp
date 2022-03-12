@@ -38,13 +38,14 @@ Box::~Box()
 
 Box* Box::Clone()
 {
+	return nullptr;
 }
 
 void Box::Update()
 {
+	m_pos.x -= SCROLLSPEED;
 	if (m_pSprite != nullptr)
 	{
-		m_pos.x -= SCROLLSPEED;
 		m_pSprite->m_dst.x = m_pos.x;
 	}
 }
