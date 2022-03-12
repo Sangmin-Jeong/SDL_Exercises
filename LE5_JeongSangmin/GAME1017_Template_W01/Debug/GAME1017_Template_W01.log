@@ -1,5 +1,5 @@
-﻿  Box.cpp
-  Engine.cpp
+﻿  Engine.cpp
+C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE5_JeongSangmin\GAME1017_Template_W01\Engine.h(7,10): fatal error C1083: Cannot open include file: 'Box.h': No such file or directory
   Main.cpp
+C:\Users\serim\source\repos\W2022\Fundamental 2\GAME1017_Exercises\LE5_JeongSangmin\GAME1017_Template_W01\Engine.h(7,10): fatal error C1083: Cannot open include file: 'Box.h': No such file or directory
   Generating Code...
-  GAME1017_Template_W01.vcxproj -> D:\_\GAME1017_W09_Vector2D\Debug\GAME1017_Template_W01.exe
