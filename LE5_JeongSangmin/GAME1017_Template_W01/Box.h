@@ -35,6 +35,10 @@ public:
 	void Update();
 	void Render();
 	const SDL_Point GetPos() { return m_pos; }
+	// Sprite access
+	//Sprite* GetSprite() const { return m_pSprite; }
+	//void SetSprite(Sprite* s) { m_pSprite = s; }
+
 	// Map stuff later
 
 

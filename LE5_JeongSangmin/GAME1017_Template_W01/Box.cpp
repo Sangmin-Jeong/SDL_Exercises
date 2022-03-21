@@ -38,7 +38,9 @@ Box::~Box()
 
 Box* Box::Clone()
 {
-	return nullptr;
+	Box* clone = new Box(this->m_pos, false); // Deep copy for brand new Box obj
+	clone->m_pSprite = new Sprite(this->m_pSprite->m_dst, this->m_pSprite->m_color);
+	return clone;
 }
 
 void Box::Update()
@@ -46,7 +48,7 @@ void Box::Update()
 	m_pos.x -= SCROLLSPEED;
 	if (m_pSprite != nullptr)
 	{
-		m_pSprite->m_dst.x = m_pos.x;
+		m_pSprite->m_dst.x -= SCROLLSPEED;
 	}
 }
 
@@ -62,3 +64,4 @@ void Box::Render()
 	SDL_RenderDrawRect(Engine::Instance().GetRenderer(), &dst);
 
 }
+
