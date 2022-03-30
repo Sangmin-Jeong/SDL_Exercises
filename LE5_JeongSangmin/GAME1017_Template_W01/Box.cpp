@@ -10,10 +10,10 @@ Sprite::Sprite(): m_dst({0,0,0,0}), m_src({ 0,0,0,0 })
 Sprite::Sprite(int select, const SDL_Rect d, const SDL_Rect s): m_dst(d), m_src(s), m_pSelection(select)
 {
 	// Textures
-	m_pSaw = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Img/saw.png");
-	m_pSpike_wall = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Img/spike_wall.png");
-	m_pSpike_lg = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Img/net.png");
-	m_pSpike_sm = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Img/net.png");
+	m_pNet = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Img/net.png");
+	m_pAnchor = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Img/anchor.png");
+	m_pBarrel_lg = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Img/barrel.png");
+	m_pBarrel_sm = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Img/barrel.png");
 }
 // HINT! add default values to the parameters and not need a default constructor
 
@@ -22,16 +22,16 @@ void Sprite::Render()
 	switch (m_pSelection)
 	{
 	case 0:
-		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pSaw, &m_src, &m_dst);
+		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pNet, &m_src, &m_dst);
 		break;
 	case 1:
-		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pSpike_wall, &m_src, &m_dst);
+		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pAnchor, &m_src, &m_dst);
 		break;
 	case 2:
-		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pSpike_lg, &m_src, &m_dst);
+		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pBarrel_lg, &m_src, &m_dst);
 		break;
 	case 3:
-		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pSpike_sm, &m_src, &m_dst);
+		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pBarrel_sm, &m_src, &m_dst);
 		break;
 	}
 	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), m_color.r, m_color.g, m_color.b, m_color.a);

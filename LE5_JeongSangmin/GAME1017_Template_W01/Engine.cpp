@@ -33,17 +33,19 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	m_iKeystates = SDL_GetKeyboardState(nullptr);
 	srand((unsigned)time(NULL)); // Seed random number sequence.
 
+	m_pTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Img/bg.png");
+
 	// Create the vector now.
 	m_vec.reserve(9);
 	for (int i = 0; i < 9; i++)
 	{
-		m_vec.push_back(new Box({ 128 * i,384 }));
+		m_vec.push_back(new Box({ 128 * i,550 }));
 	}
 	// Create the map of Boxes with sprites
-	m_protos.emplace("saw", new Box({ 1024, 384 }, true, 0, { 1024,384,128,128 }, {0,0,203,97}));
-	m_protos.emplace("spike_wall", new Box({ 1024, 384 }, true, 1, { 1056,0,64,384 }, { 0,0,219,620 }));
-	m_protos.emplace("spike_lg", new Box({ 1024, 384 }, true, 2, { 1024,448,128,64 }, { 0,0,849,341 }));
-	m_protos.emplace("spike_sm", new Box({ 1024, 384 }, true, 3, { 1056,480,64,32 }, { 0,0,849,341 }));
+	m_protos.emplace("net", new Box({ 1024, 550 }, true, 0, { 1024,550,128,128 }, { 0,0,849,341}));
+	m_protos.emplace("anchor", new Box({ 1024, 550 }, true, 1, { 1056,0,64,384 }, { 0,0,219,620}));
+	m_protos.emplace("barrel_lg", new Box({ 1024, 550 }, true, 2, { 1024,615,128,64 }, { 0,0,264,212}));
+	m_protos.emplace("barrel_sm", new Box({ 1024, 550 }, true, 3, { 1056,645,64,32 }, { 0,0,264,212 }));
 
 
 	// Set the gap properties
@@ -118,7 +120,7 @@ void Engine::Update()
 		}
 		else
 		{
-			m_vec.push_back(new Box({ 1024, 384 })); // Create empty Box
+			m_vec.push_back(new Box({ 1024, 550 })); // Create empty Box
 		}
 		
 	}
@@ -134,12 +136,13 @@ void Engine::Render()
 {
 	SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(m_pRenderer); // Clear the screen with the draw color.
+	SDL_RenderCopy(m_pRenderer, m_pTexture, NULL, NULL);
 	// Render stuff.
 	for (unsigned i = 0; i < m_vec.size(); i++)
 	{
 		m_vec[i]->Render();
 	}
-
+	
 	// Draw anew.
 	SDL_RenderPresent(m_pRenderer);
 }

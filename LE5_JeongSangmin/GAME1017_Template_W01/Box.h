@@ -15,10 +15,10 @@ private:
 	SDL_Color m_color; // HINT! Don't need color for A2
 
 	int m_pSelection;
-	SDL_Texture* m_pSaw;
-	SDL_Texture* m_pSpike_wall;
-	SDL_Texture* m_pSpike_lg;
-	SDL_Texture* m_pSpike_sm;
+	SDL_Texture* m_pNet;
+	SDL_Texture* m_pAnchor;
+	SDL_Texture* m_pBarrel_lg;
+	SDL_Texture* m_pBarrel_sm;
 
 public:
 	Sprite(); // If you have a dynamic array of Sprite*

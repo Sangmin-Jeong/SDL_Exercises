@@ -20,11 +20,12 @@ private: // Private properties.
 	Uint32 m_start, m_end, m_delta, m_fps; // Fixed timestep variables.
 	SDL_Window* m_pWindow; // This represents the SDL window.
 	SDL_Renderer* m_pRenderer; // This represents the buffer to draw to.
+	SDL_Texture* m_pTexture;
 
 	// Example-specific properties.
 	vector<Box*> m_vec;
 	map<string, Box*> m_protos;
-	string m_keys[4] = { "saw", "spike_wall", "spike_lg", "spike_sm" };
+	string m_keys[4] = { "net", "anchor", "barrel_lg", "barrel_sm" };
 	int m_gapCtr, m_gapMax;
 
 private: // Private methods.
