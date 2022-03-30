@@ -32,7 +32,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	m_fps = (Uint32)round((1 / (double)FPS) * 1000); // Sets FPS in milliseconds and rounds.
 	m_iKeystates = SDL_GetKeyboardState(nullptr);
 	srand((unsigned)time(NULL)); // Seed random number sequence.
-	
+
 	// Create the vector now.
 	m_vec.reserve(9);
 	for (int i = 0; i < 9; i++)
@@ -40,10 +40,10 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 		m_vec.push_back(new Box({ 128 * i,384 }));
 	}
 	// Create the map of Boxes with sprites
-	m_protos.emplace("saw", new Box({ 1024, 384 }, true, { 1024,384,128,128 }, {255,64,128,255}));
-	m_protos.emplace("spike_wall", new Box({ 1024, 384 }, true, { 1056,0,64,384 }, { 64,255,32,255 }));
-	m_protos.emplace("spike_lg", new Box({ 1024, 384 }, true, { 1024,448,128,64 }, { 234,215,84,255 }));
-	m_protos.emplace("spike_sm", new Box({ 1024, 384 }, true, { 1056,480,64,32 }, { 16,186,252,255 }));
+	m_protos.emplace("saw", new Box({ 1024, 384 }, true, 0, { 1024,384,128,128 }, {0,0,203,97}));
+	m_protos.emplace("spike_wall", new Box({ 1024, 384 }, true, 1, { 1056,0,64,384 }, { 0,0,219,620 }));
+	m_protos.emplace("spike_lg", new Box({ 1024, 384 }, true, 2, { 1024,448,128,64 }, { 0,0,849,341 }));
+	m_protos.emplace("spike_sm", new Box({ 1024, 384 }, true, 3, { 1056,480,64,32 }, { 0,0,849,341 }));
 
 
 	// Set the gap properties
